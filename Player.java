@@ -22,7 +22,7 @@ public class Player {
 		int[] r = new int[resources.length];
 		for(int i = 0;i < r.length;i++) r[i] = 0;
 		for(Card rc:cards) {
-			if(rc.isAResource()) {
+			if(((ResourceCard) rc).isAResource()) {
 				for(int i = 0;i < r.length;i++) {
 					if(((ResourceCard) rc).isResource(i)) r[i]++;
 				}
@@ -33,7 +33,7 @@ public class Player {
 	}
 	private void remove(int... r) {
 		for(int i = cards.size()-1;i >= 0;i--) {
-			if(rc.isAResource()) {
+			if(((ResourceCard) rc).isAResource()) {
 				for(int j = 0;j < r.length;j++) {
 					if(r[j] > 0 && ((ResourceCard) rc).isResource(j)) {
 						cards.remove(i);
