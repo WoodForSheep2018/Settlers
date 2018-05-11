@@ -22,7 +22,7 @@ public class Building {
   public void setOwner(Player owner) { this.owner = owner; }
   public Player getOwner() { return owner; }
   
-  public void give(Resource.Material resource) {
+  public void give(TerrainHex.Resource resource) {
     for(int n = 0;n < level;n++) owner.add(resource);
   }
   
