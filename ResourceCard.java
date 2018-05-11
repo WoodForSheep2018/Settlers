@@ -7,8 +7,8 @@ public class ResourceCard {
 		resource = r;
 	}
 	
-	public boolean isResource(int r) {
-		int[] resources = Hex.Resource.values();
+	public boolean isResource(Hex.Resource r) {
+		TerrainHex.Resource[] resources = Hex.Resource.values();
 		return resources[r]==resource;
 	}
 
