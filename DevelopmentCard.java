@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class DevelopmentCard {
+public class DevelopmentCard extends Card {
 	
 	public enum DevCardTypes{
 		Knight, VictoryPoint, RoadBuilding, Monopoly, YearOfPlenty
