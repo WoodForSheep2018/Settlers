@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -35,8 +36,19 @@ public class TerrainHex extends Hex {
 			g.setColor(new Color(255,255,168));
 		}
 		g.fillPolygon(getXPoints(), getYPoints(), 6);
+
+		if(type != Resource.Desert) {
+			g.setColor(Color.WHITE);
+			g.fillOval(getXLoc() - getWidth()/6, getYLoc() - getWidth()/6 , (2*getWidth())/6, (2*getHeight()/6));
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
+			String numString = Integer.toString(number);
+			int textWidth = g.getFontMetrics().stringWidth(numString);
+			int textAscent = g.getFontMetrics().getAscent();
+			g.drawString(numString, getXLoc() - textWidth/2, getYLoc() + textAscent/2);
+		}
 	}
-	
+
 	public int getNumber() {
 		return number;
 	}
