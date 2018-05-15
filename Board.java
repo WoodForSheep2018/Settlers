@@ -10,9 +10,11 @@ public class Board {
 	private int hexWidth;
 	private int hexHeight;
 	private int xGap;
+	private int yGap;
 	private ArrayList<OceanHex.Port> availablePorts = new ArrayList<OceanHex.Port>();
 	private ArrayList<TerrainHex.Resource> availableTiles = new ArrayList<TerrainHex.Resource>();
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
+	private ArrayList<Location> spaces = new ArrayList<Location>();
 	private boolean isDesert = false;
 
 	public Board(int pw, int ph) {
@@ -30,6 +32,7 @@ public class Board {
 		hexWidth = boardWidth/7;
 		hexHeight = (int)(2*(hexWidth/Math.sqrt(3)));
 		xGap = boardWidth - 7*hexWidth;
+		yGap = boardHeight - (11*hexHeight)/2;
 
 		availablePorts.add(OceanHex.Port.Wood);
 		availablePorts.add(OceanHex.Port.Brick);
@@ -85,7 +88,7 @@ public class Board {
 	}
 
 	public void setTileLocs() {
-		int y = hexHeight/2;
+		int y = yGap/2 + hexHeight/2;
 		int x = boardXLoc;
 		for(int r = 0; r < hexArr.length; r++) {
 			if(hexArr[r].length == 4) {
@@ -106,6 +109,11 @@ public class Board {
 				}
 				else {
 					hexArr[r][c] = new TerrainHex(randomTile(), x, y, hexWidth, randomNumber());
+					for(int i = 0; i < hexArr[r][c].getVertices().size(); i++) {
+						if(!spaces.contains(hexArr[r][c].getVertices().get(i))) {
+							spaces.add(hexArr[r][c].getVertices().get(i));
+						}
+					}
 				}
 				x += hexWidth;
 			}
