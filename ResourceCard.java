@@ -1,9 +1,9 @@
 
 public class ResourceCard {
 
-	private Hex.Resource resource;
+	private TerrainHex.Resource resource;
 
-	public ResourceCard(Hex.Resource r) {
+	public ResourceCard(TerrainHex.Resource r) {
 		resource = r;
 	}
 	
