@@ -1,5 +1,5 @@
 
-public class ResourceCard extends Card {
+public class ResourceCard {
 
 	private Hex.Resource resource;
 
@@ -8,12 +8,8 @@ public class ResourceCard extends Card {
 	}
 	
 	public boolean isResource(int r) {
-		TerrainHex.Resource[] resources = Hex.Resource.values();
+		TerrainHex.Resource[] resources = TerrainHex.Resource.values();
 		return resources[r]==resource;
-	}
-	
-	public void play() {
-		
 	}
 
 }
