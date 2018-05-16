@@ -1,14 +1,19 @@
 public class Player {
 
-	ArrayList<Card> cards;
+	private ArrayList<DevelopmentCard> dCards;
+	private ArrayList<ResourceCard> rCards;
 	private int points;
+	public static numPlayers = 0;
 
 	public Player() {
-		cards = new ArrayList<Card>();
+		devCards = new ArrayList<Card>();
+		resCards = new ArrayList<Card>();
+		points = 0;
+		numPlayers++;
 	}
 
 	public void add(Hex.Resource r) {
-		cards.add(new ResourceCard(r));
+		rCards.add(new ResourceCard(r));
 	}
 	
 	private boolean pay(int... resources) {
@@ -21,11 +26,9 @@ public class Player {
 	private boolean fulfils(int... resources) {
 		int[] r = new int[resources.length];
 		for(int i = 0;i < r.length;i++) r[i] = 0;
-		for(Card rc:cards) {
-			if(((ResourceCard) rc).isAResource()) {
-				for(int i = 0;i < r.length;i++) {
-					if(((ResourceCard) rc).isResource(i)) r[i]++;
-				}
+		for(ResourceCard rc:rCards) {
+			for(int i = 0;i < r.length;i++) {
+				r[i]++;
 			}
 		}
 		for(int i = 0;i < r.length;i++) if(r[i] < resources[i]) return false;
@@ -33,12 +36,10 @@ public class Player {
 	}
 	private void remove(int... r) {
 		for(int i = cards.size()-1;i >= 0;i--) {
-			if(((ResourceCard) rc).isAResource()) {
-				for(int j = 0;j < r.length;j++) {
-					if(r[j] > 0 && ((ResourceCard) rc).isResource(j)) {
-						cards.remove(i);
-						r[j]--;
-					}
+			for(int j = 0;j < r.length;j++) {
+				if(r[j] > 0) {
+					cards.remove(i);
+					r[j]--;
 				}
 			}
 		}
