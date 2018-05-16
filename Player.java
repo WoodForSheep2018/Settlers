@@ -1,18 +1,20 @@
+import java.util.ArrayList;
+
 public class Player {
 
 	private ArrayList<DevelopmentCard> dCards;
 	private ArrayList<ResourceCard> rCards;
 	private int points;
-	public static numPlayers = 0;
+	public static int numPlayers = 0;
 
 	public Player() {
-		devCards = new ArrayList<Card>();
-		resCards = new ArrayList<Card>();
+		ArrayList<DevelopmentCard>dCards = new ArrayList<DevelopmentCard>();
+		ArrayList<ResourceCard> rCards = new ArrayList<ResourceCard>();
 		points = 0;
 		numPlayers++;
 	}
 
-	public void add(Hex.Resource r) {
+	public void add(TerrainHex.Resource r) {
 		rCards.add(new ResourceCard(r));
 	}
 	
@@ -35,10 +37,10 @@ public class Player {
 		return true;
 	}
 	private void remove(int... r) {
-		for(int i = cards.size()-1;i >= 0;i--) {
+		for(int i = rCards.size()-1;i >= 0;i--) {
 			for(int j = 0;j < r.length;j++) {
 				if(r[j] > 0) {
-					cards.remove(i);
+					rCards.remove(i);
 					r[j]--;
 				}
 			}
