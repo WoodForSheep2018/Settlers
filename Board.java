@@ -14,6 +14,7 @@ public class Board {
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
 	private ArrayList<Location> spaces = new ArrayList<Location>();
 	private boolean isDesert = false;
+	private ArrayList<DevelopmentCard> devCards = new ArrayList<DevelopmentCard>();
 
 	public Board(int pw, int ph) {
 		for(int i = 0;i < hexArr.length/2+1;i++) {
@@ -116,8 +117,7 @@ public class Board {
 			randIndex = (int)(Math.random()*availablePorts.size());
 			currentPort = availablePorts.get(randIndex);
 			availablePorts.remove(randIndex);
-			hexArr[megaArr[i][0]][megaArr[i][1]]
-					= new OceanHex(
+			hexArr[megaArr[i][0]][megaArr[i][1]]= new OceanHex(
 							currentPort,
 							hexArr[megaArr[i][0]][megaArr[i][1]].getXLoc(),
 							hexArr[megaArr[i][0]][megaArr[i][1]].getYLoc(),
@@ -159,6 +159,40 @@ public class Board {
 				hexArr[r][c].draw(g);
 			}
 		}
+	}
+	
+	public void makeDevCardDeck() {
+		for (int k = 0; k < 28; k++) {
+			devCards.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Knight));
+		}
+		for (int vp = 0; vp < 10; vp++) {
+			devCards.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.VictoryPoint));
+		}
+		for (int rb = 0; rb < 4; rb++) {
+			devCards.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.RoadBuilding));
+		}
+		for (int m = 0; m < 4; m++) {
+			devCards.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Monopoly));
+		}
+		for (int yop = 0; yop < 4; yop++) {
+			devCards.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.YearOfPlenty));
+		}
+
+		ArrayList<DevelopmentCard> temp = new ArrayList<DevelopmentCard>();
+		for (int i = 0; i < 50; i++) {
+			int rand = (int) (Math.random() * 50);
+			while (temp.contains(devCards.get(rand))) {
+				rand = (int) (Math.random() * 50);
+			}
+			temp.add(devCards.get(rand));
+		}
+		devCards=temp;
+	}
+
+	public DevelopmentCard takeDevCard() {
+		DevelopmentCard dc = devCards.get(0);
+		devCards.remove(0);
+		return dc;
 	}
 
 }

@@ -1,5 +1,5 @@
 public abstract class Card{
 
-  public void play();
+  public abstract void play(Player player);
 
 }

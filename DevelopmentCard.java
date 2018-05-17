@@ -11,12 +11,12 @@ public class DevelopmentCard extends Card {
 		type=t;
 	}
 	
-	public void play() {
+	public void play(Player player) {
 		if(type.equals(DevCardTypes.Knight)) {
 			
 		}
 		else if(type.equals(DevCardTypes.VictoryPoint)) {
-			
+			player.addVp();
 		}
 		else if(type.equals(DevCardTypes.RoadBuilding)) {
 			

@@ -5,6 +5,7 @@ public class Player {
 	private int citiesLeft = 4;
 	private int roadsLeft = 15;
 	private int points;
+	private String name;
 	private ArrayList<ResourceCard> resourceCards;
 	private ArrayList<DevelopmentCard> devCards;
 	private ArrayList<Location> settlementLoc;
@@ -14,8 +15,9 @@ public class Player {
 	private boolean longestRoad;
 	private boolean largestArmy;
 
-	public Player(Board b) {
+	public Player(Board b, String str) {
 		board=b;
+		name=str;
 	}
 
 	public void addCard(TerrainHex.Resource r) {
@@ -66,13 +68,7 @@ public class Player {
 			else if(giveResources[g].equals(TerrainHex.Resource.Rock))
 				giveR++;
 		}
-		if(findNumOfCardsOfType(TerrainHex.Resource.Brick)==giveB 
-				&& findNumOfCardsOfType(TerrainHex.Resource.Wood)==giveWo
-				&& findNumOfCardsOfType(TerrainHex.Resource.Wheat)==giveWh
-				&& findNumOfCardsOfType(TerrainHex.Resource.Sheep)==giveS
-				&& findNumOfCardsOfType(TerrainHex.Resource.Rock)==giveR) {
-			
-			
+		if(fulfills(giveB,giveWo,giveWh,giveS,giveR)) {
 			ArrayList<ResourceCard> b = removeCardsOfType(TerrainHex.Resource.Brick,giveB);
 			ArrayList<ResourceCard> wo = removeCardsOfType(TerrainHex.Resource.Wood,giveWo);
 			ArrayList<ResourceCard> wh = removeCardsOfType(TerrainHex.Resource.Wheat,giveWh);
@@ -113,12 +109,7 @@ public class Player {
 			else if(receiveResources[g].equals(TerrainHex.Resource.Rock))
 				recR++;
 		}
-		if(trader.findNumOfCardsOfType(TerrainHex.Resource.Brick)==recB 
-				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Wood)==recWo
-				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Wheat)==recWh
-				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Sheep)==recS
-				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Rock)==recR) {
-			
+		if(trader.fulfills(recB,recWo,recWh,recS,recR)) {
 			ArrayList<ResourceCard> b = trader.removeCardsOfType(TerrainHex.Resource.Brick,recB);
 			ArrayList<ResourceCard> wo = trader.removeCardsOfType(TerrainHex.Resource.Wood,recWo);
 			ArrayList<ResourceCard> wh = trader.removeCardsOfType(TerrainHex.Resource.Wheat,recWh);
@@ -151,11 +142,6 @@ public class Player {
 		
 	}
 	
-	public ArrayList<ResourceCard> giveUpCards(){
-		ArrayList<ResourceCard> give = new ArrayList<ResourceCard>();
-		
-		return give;
-	}
 	
 	public void buildRoad() {
 		if (canBuildRoad()) {
@@ -219,32 +205,31 @@ public class Player {
 		return cards;
 	}
 	
-	
-	
-	public boolean canBuildRoad() {
-		return (findNumOfCardsOfType(TerrainHex.Resource.Brick) == 1
-				&& findNumOfCardsOfType(TerrainHex.Resource.Wood) == 1);
+	private boolean fulfills(int... r) {
+		// brick, wood, wheat, sheep, rock
+		
+		int[] resources = new int[r.length];
+		for(int i=0; i<r.length; i++) {
+			resources[i] = r[i];
+		}
+		if(!(findNumOfCardsOfType(TerrainHex.Resource.Brick) >= resources[0])){
+			return false;
+		}
+		if(!(findNumOfCardsOfType(TerrainHex.Resource.Wood) >= resources[1])){
+			return false;
+		}
+		if(!(findNumOfCardsOfType(TerrainHex.Resource.Wheat) >= resources[2])){
+			return false;
+		}
+		if(!(findNumOfCardsOfType(TerrainHex.Resource.Sheep) >= resources[3])){
+			return false;
+		}
+		if(!(findNumOfCardsOfType(TerrainHex.Resource.Rock) >= resources[4])){
+			return false;
+		}
+		return true;
 	}
 
-	public boolean canBuildSettlement() {
-		return (findNumOfCardsOfType(TerrainHex.Resource.Brick) == 1
-				&& findNumOfCardsOfType(TerrainHex.Resource.Wood) == 1
-				&& findNumOfCardsOfType(TerrainHex.Resource.Wheat) == 1
-				&& findNumOfCardsOfType(TerrainHex.Resource.Sheep) == 1);
-	}
-
-	public boolean canBuildCity() {
-		return (findNumOfCardsOfType(TerrainHex.Resource.Rock) == 3
-				&& findNumOfCardsOfType(TerrainHex.Resource.Wheat) == 2);
-	}
-
-	public boolean canBuyDevCard() {
-		return (findNumOfCardsOfType(TerrainHex.Resource.Rock) == 1
-				&& findNumOfCardsOfType(TerrainHex.Resource.Wheat) == 1
-				&& findNumOfCardsOfType(TerrainHex.Resource.Sheep) == 1);
-	}
-
-	
 	private int findNumOfCardsOfType(TerrainHex.Resource r) {
 		int num = 0;
 		for (ResourceCard rc : resourceCards) {
@@ -254,20 +239,38 @@ public class Player {
 		}
 		return num;
 	}
+	
+	public boolean canBuildRoad() {
+		return (fulfills(1,1,0,0,0));
+	}
+
+	public boolean canBuildSettlement() {
+		return (fulfills(1,1,1,1,0));
+	}
+
+	public boolean canBuildCity() {
+		return (fulfills(0,0,2,0,3));
+	}
+
+	public boolean canBuyDevCard() {
+		return (fulfills(0,0,1,1,1));
+	}
 }
 
 
 //public class Player {
 //
-//	ArrayList<Card> cards;
+//	ArrayList<ResourceCard> resourceCards;
+//  ArrayList<DevelopmentCard> devCards;
 //	private int points;
 //
 //	public Player() {
-//		cards = new ArrayList<Card>();
+//		cards = new ArrayList<ResourceCard>();
+//      devCards = new ArrayList<DevelopmentCard>();
 //	}
 //
-//	public void add(Hex.Resource r) {
-//		cards.add(new ResourceCard(r));
+//	public void addCard(Hex.Resource r) {
+//		resourceCards.add(new ResourceCard(r));
 //	}
 //	
 //	private boolean pay(int... resources) {
@@ -291,7 +294,7 @@ public class Player {
 //		return true;
 //	}
 //	private void remove(int... r) {
-//		for(int i = cards.size()-1;i >= 0;i--) {
+//		for(int i = resourceCards.size()-1; i >= 0; i--) {
 //			if(((ResourceCard) rc).isAResource()) {
 //				for(int j = 0;j < r.length;j++) {
 //					if(r[j] > 0 && ((ResourceCard) rc).isResource(j)) {
