@@ -42,24 +42,17 @@ public class Board {
 		availablePorts.add(OceanHex.Port.ThreeOne);
 		availablePorts.add(OceanHex.Port.ThreeOne);
 
-		availableTiles.add(TerrainHex.Resource.Wood);
-		availableTiles.add(TerrainHex.Resource.Wood);
-		availableTiles.add(TerrainHex.Resource.Wood);
-		availableTiles.add(TerrainHex.Resource.Wood);
-		availableTiles.add(TerrainHex.Resource.Brick);
-		availableTiles.add(TerrainHex.Resource.Brick);
-		availableTiles.add(TerrainHex.Resource.Brick);
-		availableTiles.add(TerrainHex.Resource.Sheep);
-		availableTiles.add(TerrainHex.Resource.Sheep);
-		availableTiles.add(TerrainHex.Resource.Sheep);
-		availableTiles.add(TerrainHex.Resource.Sheep);
-		availableTiles.add(TerrainHex.Resource.Wheat);
-		availableTiles.add(TerrainHex.Resource.Wheat);
-		availableTiles.add(TerrainHex.Resource.Wheat);
-		availableTiles.add(TerrainHex.Resource.Wheat);
-		availableTiles.add(TerrainHex.Resource.Rock);
-		availableTiles.add(TerrainHex.Resource.Rock);
-		availableTiles.add(TerrainHex.Resource.Rock);
+		for(int i = 0; i < 4; i ++) {
+			availableTiles.add(TerrainHex.Resource.Wood);
+			availableTiles.add(TerrainHex.Resource.Sheep);
+			availableTiles.add(TerrainHex.Resource.Wheat);
+		}
+		
+		for(int i = 0; i < 3; i++) {
+			availableTiles.add(TerrainHex.Resource.Brick);
+			availableTiles.add(TerrainHex.Resource.Rock);
+		}
+		
 		availableTiles.add(TerrainHex.Resource.Desert);
 
 		availableNumbers.add(2);
@@ -225,4 +218,6 @@ public class Board {
 		return dc;
 	}
 }
+
+
 
