@@ -6,6 +6,7 @@ public class Player {
 	private int roadsLeft = 15;
 	private int points;
 	private String name;
+	private int playerNum;
 	private ArrayList<ResourceCard> resourceCards;
 	private ArrayList<DevelopmentCard> devCards;
 	private ArrayList<Location> settlementLoc;
@@ -15,9 +16,10 @@ public class Player {
 	private boolean longestRoad;
 	private boolean largestArmy;
 
-	public Player(Board b, String str) {
+	public Player(Board b, String str, int num) {
 		board=b;
 		name=str;
+		playerNum=num;
 	}
 
 	public void addCard(TerrainHex.Resource r) {
@@ -238,6 +240,22 @@ public class Player {
 			}
 		}
 		return num;
+	}
+	
+	public int getPlayerNumber() {
+		return playerNum;
+	}
+	public String getName() {
+		return name;
+	}
+	public int getPoints() {
+		return points;
+	}
+	public ArrayList<ResourceCard> getRCards(){
+		return resourceCards;
+	}
+	public ArrayList<DevelopmentCard> getDCards(){
+		return devCards;
 	}
 	
 	public boolean canBuildRoad() {
