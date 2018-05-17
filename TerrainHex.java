@@ -2,9 +2,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
+import java.util.Observer;
+
+import javax.imageio.ImageIO;
 
 public class TerrainHex extends Hex {
-	private Type t = Type.Terrain;
+	private Type t;
 	public enum Resource{Wood, Brick, Sheep, Wheat, Rock, Desert}
 	private Resource type;
 	private int number;
@@ -13,6 +17,7 @@ public class TerrainHex extends Hex {
 		super(x,y,w);
 		type = r;
 		number = n;
+		t = Type.Terrain;
 	}
 
 	public void draw(Graphics g) {
@@ -47,6 +52,17 @@ public class TerrainHex extends Hex {
 			int textWidth = g.getFontMetrics().stringWidth(numString);
 			int textAscent = g.getFontMetrics().getAscent();
 			g.drawString(numString, getXLoc() - textWidth/2, getYLoc() + textAscent/2);
+		}
+		else {
+			Observer o = null;
+			Image i = null;
+			try {
+				i = ImageIO.read(getClass().getResource("theHexV3.GIF"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			g.drawImage(i,getXLoc() - 25, getYLoc() - 35 , 50, 75, null);
 		}
 	}
 
