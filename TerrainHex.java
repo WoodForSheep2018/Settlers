@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 public class TerrainHex extends Hex {
+	private Type t = Type.Terrain;
 	public enum Resource{Wood, Brick, Sheep, Wheat, Rock, Desert}
 	private Resource type;
 	private int number;
@@ -51,6 +52,10 @@ public class TerrainHex extends Hex {
 
 	public int getNumber() {
 		return number;
+	}
+	
+	public Type getType() {
+		return t;
 	}
 
 }
