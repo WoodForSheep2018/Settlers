@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 public class OceanHex extends Hex {
+	private Type t = Type.Ocean;
 	public enum Port{Wood, Brick, Sheep, Wheat, Rock, ThreeOne, Ocean}
 	private Port type;
 	
@@ -83,12 +84,16 @@ public class OceanHex extends Hex {
 			g.fillOval(getXLoc() - getWidth()/4, getYLoc() - getHeight()/4, getWidth()/2, getHeight()/2);
 			g.setColor(Color.BLACK);
 			g.setColor(Color.BLACK);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 14));
 			String str = "3:1";
 			int textWidth = g.getFontMetrics().stringWidth(str);
 			int textAscent = g.getFontMetrics().getAscent();
 			g.drawString(str, getXLoc() - textWidth/2, getYLoc() + textAscent/2);
 		}
+	}
+	
+	public Type getType() {
+		return t;
 	}
 	
 }
