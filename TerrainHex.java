@@ -54,7 +54,6 @@ public class TerrainHex extends Hex {
 			g.drawString(numString, getXLoc() - textWidth/2, getYLoc() + textAscent/2);
 		}
 		else {
-			Observer o = null;
 			Image i = null;
 			try {
 				i = ImageIO.read(getClass().getResource("theHexV3.GIF"));
