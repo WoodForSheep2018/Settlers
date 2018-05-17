@@ -12,6 +12,7 @@ public abstract class Hex {
 	private ArrayList<Location> vertices = new ArrayList<Location>();
 	private int width;
 	private int height;
+	private boolean isRobber;
 
 	public Hex(int x, int y, int w) {
 		xLoc = x;
@@ -24,6 +25,7 @@ public abstract class Hex {
 		for(int i = 0; i < xPoints.length; i++) {
 			vertices.add(new Location(xPoints[i], yPoints[i]));
 		}
+		isRobber = false;
 	}
 
 	public abstract void draw(Graphics g);
@@ -57,5 +59,9 @@ public abstract class Hex {
 	}
 	
 	public abstract Type getType();
+
+	public void makeRobber() {
+		isRobber = true;
+	}
 	
 }
