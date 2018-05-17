@@ -21,6 +21,9 @@ public class Player {
 	public void addCard(TerrainHex.Resource r) {
 		resourceCards.add(new ResourceCard(r));
 	}
+	public void addCard(ResourceCard rc) {
+		resourceCards.add(rc);
+	}
 	
 	public void addVp() {
 		points++;
@@ -29,21 +32,135 @@ public class Player {
 	public void giveLongestRoad() {
 		longestRoad = true;
 	}
-	public void takeLongestRoad() {
+	public void revokeLongestRoad() {
 		longestRoad = false;
 	}
 
 	public void giveLargestArmy() {
 		largestArmy = true;
 	}
-	public void takeLargestArmy() {
+	public void revokeLargestArmy() {
 		largestArmy = false;
+	}
+	
+	public void trade(Player trader, TerrainHex.Resource[] giveResources, TerrainHex.Resource[] receiveResources) {
+		//make it so that other person can accept or reject
+		
+		ArrayList<ResourceCard> give = new ArrayList<ResourceCard>();
+		ArrayList<ResourceCard> receive = new ArrayList<ResourceCard>();
+
+		int giveB=0;
+		int giveWo=0;
+		int giveWh=0;
+		int giveS=0;
+		int giveR=0;
+		for(int g=0; g<giveResources.length; g++) {
+			if(giveResources[g].equals(TerrainHex.Resource.Brick))
+				giveB++;
+			else if(giveResources[g].equals(TerrainHex.Resource.Wood))
+				giveWo++;
+			else if(giveResources[g].equals(TerrainHex.Resource.Wheat))
+				giveWh++;
+			else if(giveResources[g].equals(TerrainHex.Resource.Sheep))
+				giveS++;
+			else if(giveResources[g].equals(TerrainHex.Resource.Rock))
+				giveR++;
+		}
+		if(findNumOfCardsOfType(TerrainHex.Resource.Brick)==giveB 
+				&& findNumOfCardsOfType(TerrainHex.Resource.Wood)==giveWo
+				&& findNumOfCardsOfType(TerrainHex.Resource.Wheat)==giveWh
+				&& findNumOfCardsOfType(TerrainHex.Resource.Sheep)==giveS
+				&& findNumOfCardsOfType(TerrainHex.Resource.Rock)==giveR) {
+			
+			
+			ArrayList<ResourceCard> b = removeCardsOfType(TerrainHex.Resource.Brick,giveB);
+			ArrayList<ResourceCard> wo = removeCardsOfType(TerrainHex.Resource.Wood,giveWo);
+			ArrayList<ResourceCard> wh = removeCardsOfType(TerrainHex.Resource.Wheat,giveWh);
+			ArrayList<ResourceCard> s = removeCardsOfType(TerrainHex.Resource.Sheep,giveS);
+			ArrayList<ResourceCard> r = removeCardsOfType(TerrainHex.Resource.Rock,giveR);
+			
+			for(int i=0; i<b.size(); i++) {
+				give.add(b.get(i));
+			}
+			for(int i=0; i<wo.size(); i++) {
+				give.add(wo.get(i));
+			}
+			for(int i=0; i<wh.size(); i++) {
+				give.add(wh.get(i));
+			}
+			for(int i=0; i<s.size(); i++) {
+				give.add(s.get(i));
+			}
+			for(int i=0; i<r.size(); i++) {
+				give.add(r.get(i));
+			}
+		}
+		
+		int recB=0;
+		int recWo=0;
+		int recWh=0;
+		int recS=0;
+		int recR=0;
+		for(int g=0; g<receiveResources.length; g++) {
+			if(receiveResources[g].equals(TerrainHex.Resource.Brick))
+				recB++;
+			else if(receiveResources[g].equals(TerrainHex.Resource.Wood))
+				recWo++;
+			else if(receiveResources[g].equals(TerrainHex.Resource.Wheat))
+				recWh++;
+			else if(receiveResources[g].equals(TerrainHex.Resource.Sheep))
+				recS++;
+			else if(receiveResources[g].equals(TerrainHex.Resource.Rock))
+				recR++;
+		}
+		if(trader.findNumOfCardsOfType(TerrainHex.Resource.Brick)==recB 
+				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Wood)==recWo
+				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Wheat)==recWh
+				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Sheep)==recS
+				&& trader.findNumOfCardsOfType(TerrainHex.Resource.Rock)==recR) {
+			
+			ArrayList<ResourceCard> b = trader.removeCardsOfType(TerrainHex.Resource.Brick,recB);
+			ArrayList<ResourceCard> wo = trader.removeCardsOfType(TerrainHex.Resource.Wood,recWo);
+			ArrayList<ResourceCard> wh = trader.removeCardsOfType(TerrainHex.Resource.Wheat,recWh);
+			ArrayList<ResourceCard> s = trader.removeCardsOfType(TerrainHex.Resource.Sheep,recS);
+			ArrayList<ResourceCard> r = trader.removeCardsOfType(TerrainHex.Resource.Rock,recR);
+			
+			for(int i=0; i<b.size(); i++) {
+				receive.add(b.get(i));
+			}
+			for(int i=0; i<wo.size(); i++) {
+				receive.add(wo.get(i));
+			}
+			for(int i=0; i<wh.size(); i++) {
+				receive.add(wh.get(i));
+			}
+			for(int i=0; i<s.size(); i++) {
+				receive.add(s.get(i));
+			}
+			for(int i=0; i<r.size(); i++) {
+				receive.add(r.get(i));
+			}
+		}
+		
+		for(int i=0; i<receive.size(); i++) {
+			addCard(receive.get(i));
+		}
+		for(int i=0; i<give.size(); i++) {
+			trader.addCard(give.get(i));
+		}
+		
+	}
+	
+	public ArrayList<ResourceCard> giveUpCards(){
+		ArrayList<ResourceCard> give = new ArrayList<ResourceCard>();
+		
+		return give;
 	}
 	
 	public void buildRoad() {
 		if (canBuildRoad()) {
-			removeCardOfType(TerrainHex.Resource.Brick);
-			removeCardOfType(TerrainHex.Resource.Wood);
+			removeCardsOfType(TerrainHex.Resource.Brick,1);
+			removeCardsOfType(TerrainHex.Resource.Wood,1);
 			roadsLeft--;
 			putDownRoad(Location);
 		}
@@ -51,10 +168,10 @@ public class Player {
 
 	public void buildSettlement() {
 		if (canBuildSettlement()) {
-			removeCardOfType(TerrainHex.Resource.Brick);
-			removeCardOfType(TerrainHex.Resource.Wood);
-			removeCardOfType(TerrainHex.Resource.Wheat);
-			removeCardOfType(TerrainHex.Resource.Sheep);
+			removeCardsOfType(TerrainHex.Resource.Brick,1);
+			removeCardsOfType(TerrainHex.Resource.Wood,1);
+			removeCardsOfType(TerrainHex.Resource.Wheat,1);
+			removeCardsOfType(TerrainHex.Resource.Sheep,1);
 			setsLeft--;
 			putDownSettlement(Location);
 			points++;
@@ -63,11 +180,8 @@ public class Player {
 
 	public void buildCity() {
 		if (canBuildCity()) {
-			removeCardOfType(TerrainHex.Resource.Rock);
-			removeCardOfType(TerrainHex.Resource.Rock);
-			removeCardOfType(TerrainHex.Resource.Rock);
-			removeCardOfType(TerrainHex.Resource.Wheat);
-			removeCardOfType(TerrainHex.Resource.Wheat);
+			removeCardsOfType(TerrainHex.Resource.Rock,3);
+			removeCardsOfType(TerrainHex.Resource.Wheat,2);
 			citiesLeft--;
 			putDownCity(Location);
 			points++;
@@ -76,9 +190,9 @@ public class Player {
 
 	public void buyDevCard() {
 		if (canBuyDevCard()) {
-			removeCardOfType(TerrainHex.Resource.Rock);
-			removeCardOfType(TerrainHex.Resource.Wheat);
-			removeCardOfType(TerrainHex.Resource.Sheep);
+			removeCardsOfType(TerrainHex.Resource.Rock,1);
+			removeCardsOfType(TerrainHex.Resource.Wheat,1);
+			removeCardsOfType(TerrainHex.Resource.Sheep,1);
 			devCards.add(board.takeDevCard());
 		}
 	}
@@ -92,7 +206,20 @@ public class Player {
 			}
 		}
 	}
-
+	
+	private ArrayList<ResourceCard> removeCardsOfType(TerrainHex.Resource r, int num) {
+		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
+		for (int i = 0; i < resourceCards.size(); i++) {
+			if (num>0 && resourceCards.get(i).getResource().equals(r)) {
+				cards.add(resourceCards.remove(i));
+				i--;
+				num--;
+			}
+		}
+		return cards;
+	}
+	
+	
 	
 	public boolean canBuildRoad() {
 		return (findNumOfCardsOfType(TerrainHex.Resource.Brick) == 1
@@ -126,15 +253,6 @@ public class Player {
 			}
 		}
 		return num;
-	}
-
-	private void removeCardOfType(TerrainHex.Resource r) {
-		for (int i = 0; i < resourceCards.size(); i++) {
-			if (resourceCards.get(i).getResource().equals(r)) {
-				resourceCards.remove(i);
-				return;
-			}
-		}
 	}
 }
 
