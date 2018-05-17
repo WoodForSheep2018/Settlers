@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 
 public abstract class Hex {
+	public enum Type {Terrain, Ocean}
 	private int xLoc;
 	private int yLoc;
 	private int[] xPoints;
@@ -54,5 +55,7 @@ public abstract class Hex {
 	public ArrayList<Location> getVertices() {
 		return vertices;
 	}
+	
+	public abstract Type getType();
 	
 }
