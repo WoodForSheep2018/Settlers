@@ -10,12 +10,11 @@ public class Board {
 	private int hexWidth;
 	private int hexHeight;
 	private int xGap;
-	private int yGap;
 	private ArrayList<OceanHex.Port> availablePorts = new ArrayList<OceanHex.Port>();
 	private ArrayList<TerrainHex.Resource> availableTiles = new ArrayList<TerrainHex.Resource>();
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
-	private ArrayList<Location> spaces = new ArrayList<Location>();
 	private boolean isDesert = false;
+	private ArrayList<DevelopmentCard> devCardDeck = new ArrayList<DevelopmentCard>();
 
 	public Board(int pw, int ph) {
 		hexArr[0] = new Hex[4];
@@ -32,7 +31,6 @@ public class Board {
 		hexWidth = boardWidth/7;
 		hexHeight = (int)(2*(hexWidth/Math.sqrt(3)));
 		xGap = boardWidth - 7*hexWidth;
-		yGap = boardHeight - (11*hexHeight)/2;
 
 		availablePorts.add(OceanHex.Port.Wood);
 		availablePorts.add(OceanHex.Port.Brick);
@@ -85,10 +83,11 @@ public class Board {
 
 		setTileLocs();
 		setUpPorts();
+		makeDevCardDeck();
 	}
 
 	public void setTileLocs() {
-		int y = yGap/2 + hexHeight/2;
+		int y = hexHeight/2;
 		int x = boardXLoc;
 		for(int r = 0; r < hexArr.length; r++) {
 			if(hexArr[r].length == 4) {
@@ -109,11 +108,6 @@ public class Board {
 				}
 				else {
 					hexArr[r][c] = new TerrainHex(randomTile(), x, y, hexWidth, randomNumber());
-					for(int i = 0; i < hexArr[r][c].getVertices().size(); i++) {
-						if(!spaces.contains(hexArr[r][c].getVertices().get(i))) {
-							spaces.add(hexArr[r][c].getVertices().get(i));
-						}
-					}
 				}
 				x += hexWidth;
 			}
@@ -197,5 +191,38 @@ public class Board {
 		}
 	}
 
+	public void makeDevCardDeck() {
+		for (int k = 0; k < 28; k++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Knight));
+		}
+		for (int vp = 0; vp < 10; vp++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.VictoryPoint));
+		}
+		for (int rb = 0; rb < 4; rb++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.RoadBuilding));
+		}
+		for (int m = 0; m < 4; m++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Monopoly));
+		}
+		for (int yop = 0; yop < 4; yop++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.YearOfPlenty));
+		}
+
+		ArrayList<DevelopmentCard> temp = new ArrayList<DevelopmentCard>();
+		for (int i = 0; i < 50; i++) {
+			int rand = (int) (Math.random() * 50);
+			while (temp.contains(devCardDeck.get(rand))) {
+				rand = (int) (Math.random() * 50);
+			}
+			temp.add(devCardDeck.get(rand));
+		}
+		devCardDeck=temp;
+	}
+	
+	public DevelopmentCard takeDevCard() {
+		DevelopmentCard dc = devCardDeck.get(0);
+		devCardDeck.remove(0);
+		return dc;
+	}
 }
 
