@@ -72,5 +72,8 @@ public class TerrainHex extends Hex {
 	public Type getType() {
 		return t;
 	}
-
+	
+	public TerrainHex.Resource getResource(){
+		return type;
+	}
 }
