@@ -7,11 +7,11 @@ public class Player {
 	private int points;
 	private String name;
 	private int playerNum;
-	private ArrayList<ResourceCard> resourceCards;
-	private ArrayList<DevelopmentCard> devCards;
-	private ArrayList<Location> settlementLoc;
-	private ArrayList<Location> cityLoc;
-	private ArrayList<Location> roadLoc;
+	private ArrayList<ResourceCard> resourceCards = new ArrayList<ResourceCard>();
+	private ArrayList<DevelopmentCard> devCards = new ArrayList<DevelopmentCard>();
+	private ArrayList<Location> settlementLoc = new ArrayList<Location>();
+	private ArrayList<Location> cityLoc = new ArrayList<Location>();
+	private ArrayList<Location> roadLoc = new ArrayList<Location>();
 	private Board board;
 	private boolean longestRoad;
 	private boolean largestArmy;
