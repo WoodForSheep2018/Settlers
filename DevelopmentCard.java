@@ -19,13 +19,15 @@ public class DevelopmentCard extends Card {
 			player.addVp();
 		}
 		else if(type.equals(DevCardTypes.RoadBuilding)) {
-			
+			player.buildRoad(loc);
+			player.buildRoad(loc);
 		}
 		else if(type.equals(DevCardTypes.Monopoly)) {
 	
 		}
 		else if(type.equals(DevCardTypes.YearOfPlenty)) {
-			
+			player.addCard(res);
+			player.addCard(res);
 		}
 
 	}
