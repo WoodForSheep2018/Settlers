@@ -59,6 +59,8 @@ public abstract class Hex {
 	}
 	
 	public abstract Type getType();
+	public abstract TerrainHex.Resource getResource();
+	public abstract int getNumber();
 
 	public void makeRobber() {
 		isRobber = true;
