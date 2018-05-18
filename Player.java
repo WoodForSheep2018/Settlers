@@ -145,33 +145,33 @@ public class Player {
 	}
 	
 	
-	public void buildRoad() {
+	public void buildRoad(Location location) {
 		if (canBuildRoad()) {
 			removeCardsOfType(TerrainHex.Resource.Brick,1);
 			removeCardsOfType(TerrainHex.Resource.Wood,1);
 			roadsLeft--;
-			putDownRoad(Location);
+			putDownRoad(location);
 		}
 	}
 
-	public void buildSettlement() {
+	public void buildSettlement(Location location) {
 		if (canBuildSettlement()) {
 			removeCardsOfType(TerrainHex.Resource.Brick,1);
 			removeCardsOfType(TerrainHex.Resource.Wood,1);
 			removeCardsOfType(TerrainHex.Resource.Wheat,1);
 			removeCardsOfType(TerrainHex.Resource.Sheep,1);
 			setsLeft--;
-			putDownSettlement(Location);
+			putDownSettlement(location);
 			points++;
 		}
 	}
 
-	public void buildCity() {
+	public void buildCity(Location location) {
 		if (canBuildCity()) {
 			removeCardsOfType(TerrainHex.Resource.Rock,3);
 			removeCardsOfType(TerrainHex.Resource.Wheat,2);
 			citiesLeft--;
-			putDownCity(Location);
+			putDownCity(location);
 			points++;
 		}
 	}
