@@ -4,8 +4,9 @@ public class Building {
   private int level;
   private Player owner;
   
-  public Building() {
+  public Building(Player p) {
     level = 0;
+    owner=p;
   }
   
   public void upgrade() {
@@ -23,7 +24,7 @@ public class Building {
   public Player getOwner() { return owner; }
   
   public void give(TerrainHex.Resource resource) {
-    for(int n = 0;n < level;n++) owner.add(resource);
+    for(int n = 0;n < level;n++) owner.addCard(resource);
   }
   
 }
