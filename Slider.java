@@ -46,13 +46,14 @@ public class Slider extends Button {
 			}
 		}
 		dragging = true;
-		dragX = x - this.x;
+		dragX = (x >= this.x && x <= this.x+width) ? x - this.x :
+			(x < this.x) ? 0 : width;
 	}
 	public void drag() { dragging = false; }
 
 	public void draw(Graphics g) {
 		g.setColor(Color.BLACK);
-		g.fillRect(x,y+height/2,width,2);
+		g.fillRect(x-6,y+height/2,width+11,2);
 		for(SliderStep ss:steps) {
 			ss.draw(g);
 		}
