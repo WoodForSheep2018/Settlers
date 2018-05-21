@@ -40,16 +40,20 @@ public class Player {
 	
 	public void giveLongestRoad() {
 		longestRoad = true;
+		points+=2;
 	}
 	public void revokeLongestRoad() {
 		longestRoad = false;
+		points-=2;
 	}
 
 	public void giveLargestArmy() {
 		largestArmy = true;
+		points+=2;
 	}
 	public void revokeLargestArmy() {
 		largestArmy = false;
+		points-=2;
 	}
 	
 	public void trade(Player trader, TerrainHex.Resource[] giveResources, TerrainHex.Resource[] receiveResources) {

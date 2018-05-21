@@ -6,9 +6,11 @@ public class DevelopmentCard extends Card {
 		Knight, VictoryPoint, RoadBuilding, Monopoly, YearOfPlenty
 	}
 	private DevCardTypes type;
+	private Board board;
 	
-	public DevelopmentCard(DevCardTypes t) {
+	public DevelopmentCard(DevCardTypes t, Board b) {
 		type=t;
+		board=b;
 	}
 	
 	public void play(Player player) {
@@ -27,6 +29,7 @@ public class DevelopmentCard extends Card {
 		
 		else if(type.equals(DevCardTypes.Monopoly)) {
 			ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
+			ArrayList<Player> players = board.getPlayers();
 			TerrainHex.Resource res = declared();
 			for(Player p:players) {
 				ArrayList<ResourceCard> give = p.removeAllCardsOfType(res);

@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Board {
+	private ArrayList<Player> players = new ArrayList<Player>();
 	private Hex[][] hexArr = new Hex[7][];
 	private int boardWidth;
 	private int boardHeight;
@@ -17,6 +18,15 @@ public class Board {
 	private ArrayList<DevelopmentCard> devCardDeck = new ArrayList<DevelopmentCard>();
 
 	public Board(int pw, int ph) {
+		Player player1 = new Player(this,"Ev",1);
+		Player player2 = new Player(this,"Devon",2);
+		Player player3 = new Player(this,"Payton",3);
+		Player player4 = new Player(this,"Maz",4);
+		players.add(player1);
+		players.add(player2);
+		players.add(player3);
+		players.add(player4);
+
 		hexArr[0] = new Hex[4];
 		hexArr[1] = new Hex[5];
 		hexArr[2] = new Hex[6];
@@ -80,6 +90,10 @@ public class Board {
 		makeDevCardDeck();
 	}
 
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
+	
 	public void distributeResources(int diceRoll, Player p) {
 		for(int r = 0; r < hexArr.length; r++) {
 			for(int c = 0; c < hexArr[r].length;c++) {
@@ -215,19 +229,19 @@ public class Board {
 
 	public void makeDevCardDeck() {
 		for (int k = 0; k < 28; k++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Knight));
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Knight,this));
 		}
 		for (int vp = 0; vp < 10; vp++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.VictoryPoint));
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.VictoryPoint,this));
 		}
 		for (int rb = 0; rb < 4; rb++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.RoadBuilding));
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.RoadBuilding,this));
 		}
 		for (int m = 0; m < 4; m++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Monopoly));
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Monopoly,this));
 		}
 		for (int yop = 0; yop < 4; yop++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.YearOfPlenty));
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.YearOfPlenty,this));
 		}
 
 		ArrayList<DevelopmentCard> temp = new ArrayList<DevelopmentCard>();
