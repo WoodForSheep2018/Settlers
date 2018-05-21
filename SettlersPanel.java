@@ -33,10 +33,10 @@ public class SettlersPanel extends JPanel {
 	
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		player1 = new Player("Alan");
-		player2 = new Player("Devon");
-		player3 = new Player("Payton");
-		player4 = new Player("Maz");
+		player1 = new Player(b,"Ev",1);
+		player2 = new Player(b,"Devon",2);
+		player3 = new Player(b,"Payton",3);
+		player4 = new Player(b,"Maz",4);
 		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, player1);
 		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, player2);
 		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, player3);
