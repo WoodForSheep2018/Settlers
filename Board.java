@@ -11,6 +11,7 @@ public class Board {
 	private int hexWidth;
 	private int hexHeight;
 	private int xGap;
+	private ArrayList<Location> buildingSpots = new ArrayList<Location>();
 	private ArrayList<OceanHex.Port> availablePorts = new ArrayList<OceanHex.Port>();
 	private ArrayList<TerrainHex.Resource> availableTiles = new ArrayList<TerrainHex.Resource>();
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
@@ -88,6 +89,7 @@ public class Board {
 		setUpPorts();
 		setRobber();
 		makeDevCardDeck();
+		setBuildingLocs();
 	}
 
 	public ArrayList<Player> getPlayers(){
@@ -120,6 +122,10 @@ public class Board {
 				}
 			}
 		}
+	}
+	
+	public void setBuildingLocs() {
+		
 	}
 	
 	public void setTileLocs() {
