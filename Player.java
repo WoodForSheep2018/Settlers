@@ -28,6 +28,11 @@ public class Player {
 	public void addCard(ResourceCard rc) {
 		resourceCards.add(rc);
 	}
+	public void addCards(ArrayList<ResourceCard> cards) {
+		for(ResourceCard rc:cards) {
+			resourceCards.add(rc);
+		}
+	}
 	
 	public void addVp() {
 		points++;
@@ -195,13 +200,24 @@ public class Player {
 		}
 	}
 	
-	private ArrayList<ResourceCard> removeCardsOfType(TerrainHex.Resource r, int num) {
+	public ArrayList<ResourceCard> removeCardsOfType(TerrainHex.Resource r, int num) {
 		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
 		for (int i = 0; i < resourceCards.size(); i++) {
 			if (num>0 && resourceCards.get(i).getResource().equals(r)) {
 				cards.add(resourceCards.remove(i));
 				i--;
 				num--;
+			}
+		}
+		return cards;
+	}
+	
+	public ArrayList<ResourceCard> removeAllCardsOfType(TerrainHex.Resource r){
+		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
+		for(int i=0; i<resourceCards.size(); i++) {
+			if(resourceCards.get(i).getResource().equals(r)){
+				cards.add(resourceCards.remove(i));
+				i--;
 			}
 		}
 		return cards;

@@ -88,7 +88,7 @@ public class Board {
 					if(num == diceRoll) {
 						ArrayList<Location> vertices = hexArr[r][c].getVertices();
 						for(Location v : vertices) {
-							if(v.hasSettlement() || v.hasCity()) {
+							if(v.hasBuilding()) {
 								v.getBuilding().give(hexArr[r][c].getResource());
 							}
 						}
