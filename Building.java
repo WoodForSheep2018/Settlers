@@ -7,8 +7,8 @@ public class Building {
   public Building(Player p) {
     level = 0;
     owner=p;
-  }
   
+  }
   public void upgrade() {
     if(level >= 2) {
       System.out.println("Cannot do");
