@@ -2,6 +2,7 @@
 public class Location {
 	private int row;
 	private int col;
+	private Player player;
 	private Building building;
 	
 	public Location(int r, int c) {
@@ -17,16 +18,28 @@ public class Location {
 		return col;
 	}
 	
-	public void addBuilding(Building b) {
-		building = b;
+	public boolean hasSettlement(){
+		return building.isASettlement();		
 	}
 	
-	public boolean hasBuilding() {
-		return (building != null);
+	public boolean hasCity(){
+		return building.isACity();
+	}
+	
+	public void makeCity() {
+		building.upgrade();
+	}
+	
+	public void makeSettlement(Player p) {
+		building = new Building(p);
+		
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 	
 	public Building getBuilding() {
 		return building;
 	}
-	
 }
