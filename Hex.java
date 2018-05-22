@@ -12,7 +12,7 @@ public abstract class Hex {
 	private ArrayList<Location> vertices = new ArrayList<Location>();
 	private int width;
 	private int height;
-	private boolean isRobber;
+	public boolean isRobber;
 
 	public Hex(int x, int y, int w) {
 		xLoc = x;

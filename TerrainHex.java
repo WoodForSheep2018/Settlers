@@ -74,6 +74,8 @@ public class TerrainHex extends Hex {
 	}
 	
 	public TerrainHex.Resource getResource(){
-		return type;
+		if(!isRobber)
+			return type;
+		return null;
 	}
 }
