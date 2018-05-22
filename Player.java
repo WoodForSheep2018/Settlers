@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Player {
@@ -7,6 +8,7 @@ public class Player {
 	private int points;
 	private String name;
 	private int playerNum;
+	public static int numPlayers = 0;
 	private ArrayList<ResourceCard> resourceCards = new ArrayList<ResourceCard>();
 	private ArrayList<DevelopmentCard> devCards = new ArrayList<DevelopmentCard>();
 	private ArrayList<Location> settlementLoc = new ArrayList<Location>();
@@ -15,23 +17,34 @@ public class Player {
 	private Board board;
 	private boolean longestRoad;
 	private boolean largestArmy;
+	private boolean isTurn;
+	private Color playerColor;
 
-	public Player(Board b, String str, int num) {
-		board=b;
-		name=str;
-		playerNum=num;
+	public Player(Board b, String str) {
+		board = b;
+		name = str;
+		numPlayers++;
+		playerNum = numPlayers;
+		if(playerNum == 1) {
+			playerColor = Color.BLUE;
+		}
+		else if(playerNum == 2) {
+			playerColor = Color.RED;
+		}
+		else if(playerNum == 3) {
+			playerColor = Color.ORANGE;
+		}
+		else if(playerNum == 4) {
+			playerColor = Color.WHITE;
+		}
 	}
 
 	public void addCard(TerrainHex.Resource r) {
 		resourceCards.add(new ResourceCard(r));
 	}
+	
 	public void addCard(ResourceCard rc) {
 		resourceCards.add(rc);
-	}
-	public void addCards(ArrayList<ResourceCard> cards) {
-		for(ResourceCard rc:cards) {
-			resourceCards.add(rc);
-		}
 	}
 	
 	public void addVp() {
@@ -40,20 +53,18 @@ public class Player {
 	
 	public void giveLongestRoad() {
 		longestRoad = true;
-		points+=2;
 	}
+	
 	public void revokeLongestRoad() {
 		longestRoad = false;
-		points-=2;
 	}
 
 	public void giveLargestArmy() {
 		largestArmy = true;
-		points+=2;
 	}
+	
 	public void revokeLargestArmy() {
 		largestArmy = false;
-		points-=2;
 	}
 	
 	public void trade(Player trader, TerrainHex.Resource[] giveResources, TerrainHex.Resource[] receiveResources) {
@@ -153,34 +164,33 @@ public class Player {
 		
 	}
 	
-	
-	public void buildRoad(Location location) {
+	public void buildRoad() {
 		if (canBuildRoad()) {
 			removeCardsOfType(TerrainHex.Resource.Brick,1);
 			removeCardsOfType(TerrainHex.Resource.Wood,1);
 			roadsLeft--;
-			putDownRoad(location);
+//			putDownRoad(Location);
 		}
 	}
 
-	public void buildSettlement(Location location) {
+	public void buildSettlement() {
 		if (canBuildSettlement()) {
 			removeCardsOfType(TerrainHex.Resource.Brick,1);
 			removeCardsOfType(TerrainHex.Resource.Wood,1);
 			removeCardsOfType(TerrainHex.Resource.Wheat,1);
 			removeCardsOfType(TerrainHex.Resource.Sheep,1);
 			setsLeft--;
-			putDownSettlement(location);
+//			putDownSettlement(Location);
 			points++;
 		}
 	}
 
-	public void buildCity(Location location) {
+	public void buildCity() {
 		if (canBuildCity()) {
 			removeCardsOfType(TerrainHex.Resource.Rock,3);
 			removeCardsOfType(TerrainHex.Resource.Wheat,2);
 			citiesLeft--;
-			putDownCity(location);
+//			putDownCity(Location);
 			points++;
 		}
 	}
@@ -190,7 +200,7 @@ public class Player {
 			removeCardsOfType(TerrainHex.Resource.Rock,1);
 			removeCardsOfType(TerrainHex.Resource.Wheat,1);
 			removeCardsOfType(TerrainHex.Resource.Sheep,1);
-			devCards.add(board.takeDevCard());
+//			devCards.add(board.takeDevCard());
 		}
 	}
 	
@@ -204,24 +214,13 @@ public class Player {
 		}
 	}
 	
-	public ArrayList<ResourceCard> removeCardsOfType(TerrainHex.Resource r, int num) {
+	private ArrayList<ResourceCard> removeCardsOfType(TerrainHex.Resource r, int num) {
 		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
 		for (int i = 0; i < resourceCards.size(); i++) {
 			if (num>0 && resourceCards.get(i).getResource().equals(r)) {
 				cards.add(resourceCards.remove(i));
 				i--;
 				num--;
-			}
-		}
-		return cards;
-	}
-	
-	public ArrayList<ResourceCard> removeAllCardsOfType(TerrainHex.Resource r){
-		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
-		for(int i=0; i<resourceCards.size(); i++) {
-			if(resourceCards.get(i).getResource().equals(r)){
-				cards.add(resourceCards.remove(i));
-				i--;
 			}
 		}
 		return cards;
@@ -265,15 +264,19 @@ public class Player {
 	public int getPlayerNumber() {
 		return playerNum;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public int getPoints() {
 		return points;
 	}
+	
 	public ArrayList<ResourceCard> getRCards(){
 		return resourceCards;
 	}
+	
 	public ArrayList<DevelopmentCard> getDCards(){
 		return devCards;
 	}
@@ -293,68 +296,7 @@ public class Player {
 	public boolean canBuyDevCard() {
 		return (fulfills(0,0,1,1,1));
 	}
-}
 
-
-//public class Player {
-//
-//	ArrayList<ResourceCard> resourceCards;
-//  ArrayList<DevelopmentCard> devCards;
-//	private int points;
-//
-//	public Player() {
-//		cards = new ArrayList<ResourceCard>();
-//      devCards = new ArrayList<DevelopmentCard>();
-//	}
-//
-//	public void addCard(Hex.Resource r) {
-//		resourceCards.add(new ResourceCard(r));
-//	}
-//	
-//	private boolean pay(int... resources) {
-//		if(fulfils(resources)) {
-//			remove(resources);
-//			return true;
-//		}
-//		return false;
-//	}
-//	private boolean fulfils(int... resources) {
-//		int[] r = new int[resources.length];
-//		for(int i = 0;i < r.length;i++) r[i] = 0;
-//		for(Card rc:cards) {
-//			if(((ResourceCard) rc).isAResource()) {
-//				for(int i = 0;i < r.length;i++) {
-//					if(((ResourceCard) rc).isResource(i)) r[i]++;
-//				}
-//			}
-//		}
-//		for(int i = 0;i < r.length;i++) if(r[i] < resources[i]) return false;
-//		return true;
-//	}
-//	private void remove(int... r) {
-//		for(int i = resourceCards.size()-1; i >= 0; i--) {
-//			if(((ResourceCard) rc).isAResource()) {
-//				for(int j = 0;j < r.length;j++) {
-//					if(r[j] > 0 && ((ResourceCard) rc).isResource(j)) {
-//						cards.remove(i);
-//						r[j]--;
-//					}
-//				}
-//			}
-//		}
-//	}
-//	
-//	public boolean createBuilding() {
-//		return pay(1,1,0,1,1);
-//	}
-//	public boolean upgradeBuilding() {
-//		return pay(0,0,3,2,0);
-//	}
-//	public boolean createRoad() {
-//		return pay(1,1,0,0,0);
-//	}
-//	public boolean getDevelopment() {
-//		return pay(0,0,1,1,1);
-//	}
-//	
-//}
+	public Color getColor() {
+		return playerColor;
+	}
