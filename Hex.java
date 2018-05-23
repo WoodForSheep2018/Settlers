@@ -23,7 +23,7 @@ public abstract class Hex {
 		yPoints = new int[] {yLoc + height/2, yLoc + height/4, yLoc - height/4, yLoc - height/2, yLoc - height/4, yLoc + height/4};
 		
 		for(int i = 0; i < xPoints.length; i++) {
-			vertices.add(new Location(xPoints[i], yPoints[i]));
+			vertices.add(new Location(xPoints[i], yPoints[i], width));
 		}
 		isRobber = false;
 	}
@@ -59,11 +59,9 @@ public abstract class Hex {
 	}
 	
 	public abstract Type getType();
-	public abstract TerrainHex.Resource getResource();
-	public abstract int getNumber();
 
-	public void makeRobber() {
-		isRobber = true;
+	public void makeRobber(boolean b) {
+		isRobber = b;
 	}
 	
 }
