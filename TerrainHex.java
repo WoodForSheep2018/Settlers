@@ -57,11 +57,12 @@ public class TerrainHex extends Hex {
 			Image i = null;
 			try {
 				i = ImageIO.read(getClass().getResource("theHexV3.GIF"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} 
+			catch (IOException e) {
 				e.printStackTrace();
 			}
-			g.drawImage(i,getXLoc() - 25, getYLoc() - 35 , 50, 75, null);
+			g.drawImage(i, getXLoc() - getWidth()/4, getYLoc() - getHeight()/4, getWidth()/2, getHeight()/2, null);
+		}
 		}
 	}
 
