@@ -43,3 +43,35 @@ public class Location {
 		return building;
 	}
 }
+
+/* 
+import java.util.ArrayList;
+
+public class Location {
+	private int row;
+	private int col;
+	private ArrayList<TerrainHex.Resource> surroundingResources;
+	private ArrayList<Integer> surroundingNums;
+	
+	public Location(int r, int c) {
+		row = r;
+		col = c;
+		surroundingResources = new ArrayList<TerrainHex.Resource>();
+		surroundingNums = new ArrayList<Integer>();
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getCol() {
+		return col;
+	}
+	
+	public void assign(TerrainHex.Resource r, int i) {
+		surroundingResources.add(r);
+		surroundingNums.add(i);
+	}
+}
+
+*/
