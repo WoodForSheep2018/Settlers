@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -7,13 +8,17 @@ public class Location {
 	private ArrayList<TerrainHex.Resource> surroundingResources;
 	private ArrayList<Integer> surroundingNums;
 	private Building building;
+	private boolean isPort = false;
+	private OceanHex.Port port;
+	private int portSize;
 
-	public Location(int r, int c, int hexSize) {
+	public Location(int r, int c, int hexWidth) {
 		row = r;
 		col = c;
+		portSize = hexWidth/6;
 		surroundingResources = new ArrayList<TerrainHex.Resource>();
 		surroundingNums = new ArrayList<Integer>();
-		building = new Building(r, c, hexSize);
+		building = new Building(r, c, hexWidth);
 	}
 
 	public int getRow() {
@@ -38,14 +43,23 @@ public class Location {
 	}
 
 	public void makeCity() {
-		building.upgrade();
+		building.buildCity();;
 	}
 
 	public void makeSettlement() {
-		building.upgrade();
+		building.buildSettlement();
+	}
+	
+	public void makePort(OceanHex.Port p) {
+		port = p;
+		isPort = true;
 	}
 	
 	public void draw(Graphics g) {
+		if(isPort) {
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillOval(row - portSize/2, col - portSize/2, portSize, portSize);
+		}
 		building.draw(g);
 	}
 	
