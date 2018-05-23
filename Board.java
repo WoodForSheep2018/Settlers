@@ -113,6 +113,9 @@ public class Board {
 					TerrainHex.Resource randTile = randomTile();
 					int randNum = randomNumber();
 					hexArr[r][c] = new TerrainHex(randTile, x, y, hexWidth, randNum);
+					if(randTile == TerrainHex.Resource.Desert) {
+						hexArr[r][c].makeRobber(true);
+					}
 					for(int i = 0; i < hexArr[r][c].getVertices().size(); i++) {
 						if(!isSameLoc(hexArr[r][c].getVertices().get(i))) {
 							spaces.add(hexArr[r][c].getVertices().get(i));
@@ -266,6 +269,7 @@ public class Board {
 	}
 		
 }
+
 
 // Evan version
 
