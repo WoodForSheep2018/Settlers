@@ -7,6 +7,7 @@ public class Location {
 	private int col;
 	private ArrayList<TerrainHex.Resource> surroundingResources;
 	private ArrayList<Integer> surroundingNums;
+	private ArrayList<Hex> hexes;
 	private Building building;
 	private boolean isPort = false;
 	private OceanHex.Port port;
@@ -18,6 +19,7 @@ public class Location {
 		portSize = hexWidth/6;
 		surroundingResources = new ArrayList<TerrainHex.Resource>();
 		surroundingNums = new ArrayList<Integer>();
+		hexes = new ArrayList<Hex>();
 		building = new Building(r, c, hexWidth);
 	}
 
@@ -32,6 +34,10 @@ public class Location {
 	public void assign(TerrainHex.Resource r, int i) {
 		surroundingResources.add(r);
 		surroundingNums.add(i);
+	}
+	
+	public void assignHex(Hex h) {
+		hexes.add(h);
 	}
 
 	public boolean hasSettlement(){
