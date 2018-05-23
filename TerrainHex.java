@@ -3,7 +3,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
-import java.util.Observer;
 
 import javax.imageio.ImageIO;
 
@@ -72,5 +71,10 @@ public class TerrainHex extends Hex {
 	public Type getType() {
 		return t;
 	}
-
+	
+	public TerrainHex.Resource getResource(){
+		if(!isRobber)
+			return type;
+		return null;
+	}
 }
