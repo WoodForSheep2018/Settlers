@@ -120,10 +120,12 @@ public class Board {
 						if(!isSameLoc(hexArr[r][c].getVertices().get(i))) {
 							spaces.add(hexArr[r][c].getVertices().get(i));
 							spaces.get(spaces.size() - 1).assign(randTile, randNum);
+							spaces.get(spaces.size() - 1).assignHex(hexArr[r][c]);
 						}
 						else {
 							int index = findSameLoc(hexArr[r][c].getVertices().get(i));
 							spaces.get(index).assign(randTile, randNum);
+							spaces.get(index).assignHex(hexArr[r][c]);
 						}
 					}
 				}
@@ -269,6 +271,8 @@ public class Board {
 	}
 		
 }
+
+
 
 
 // Evan version
