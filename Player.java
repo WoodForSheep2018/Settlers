@@ -67,6 +67,10 @@ public class Player {
 		largestArmy = false;
 	}
 	
+	public void setTurn(boolean bool) {
+		isTurn = bool;
+	}
+	
 	public void trade(Player trader, TerrainHex.Resource[] giveResources, TerrainHex.Resource[] receiveResources) {
 		//make it so that other person can accept or reject
 		
@@ -300,3 +304,4 @@ public class Player {
 	public Color getColor() {
 		return playerColor;
 	}
+}
