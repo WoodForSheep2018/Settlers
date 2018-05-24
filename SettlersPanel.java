@@ -38,12 +38,12 @@ public class SettlersPanel extends JPanel {
 	public SettlersPanel() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setUpGameObjects();
-		//startGame();
+		startGame();
 	}
 	
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		player1 = new Player(b, "Alan");
+		player1 = new Player(b, "Ev");
 		playerList.add(player1);
 		player2 = new Player(b, "Devon");
 		playerList.add(player2);
@@ -62,6 +62,7 @@ public class SettlersPanel extends JPanel {
 		pickStartingPlayer();
 		while(turn < 9) {
 			pickStartingSettlements();
+			turn++;
 		}
 	}
 	
@@ -99,8 +100,11 @@ public class SettlersPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int x = e.getX();
 				int y = e.getY();
-				System.out.println(x + " " + y);
 				if(b.closestLoc(x,y) != null) {
+					if(b.closestLoc(x, y).isOnCoast()) {
+						
+					}
+					
 					b.closestLoc(x,y).makeSettlement(currentPlayer);
 					repaint();
 					nextTurn();

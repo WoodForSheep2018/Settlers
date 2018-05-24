@@ -87,6 +87,8 @@ public class Board {
 
 		setTileLocs();
 		setUpPorts();
+		setCoastalLocs();
+		setUpOrDown();
 	}
 
 	public void setTileLocs() {
@@ -280,7 +282,43 @@ public class Board {
 		}
 		return null;
 	}
+	
+	public void setUpOrDown() {
+		for(Location loc:spaces) {
+			Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
+			Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
+			Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
+			Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
+
+			if(up==null)
+				loc.up(false);
+			else if(down==null)
+				loc.up(true);
+		}
+	}
 		
+	public void setCoastalLocs() {
+		for(Location loc:spaces) {
+			if(loc.isUpLoc()) {
+				Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
+				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
+				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
+				
+				if(up==null || left==null || right==null) {
+					loc.onCoast();
+				}
+			}
+			else if(!loc.isUpLoc()) {
+				Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
+				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
+				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
+				
+				if(down==null || left==null || right==null) {
+					loc.onCoast();
+				}
+			}
+		}
+	}
 }
 
 
