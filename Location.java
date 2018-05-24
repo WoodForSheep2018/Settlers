@@ -3,8 +3,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Location {
-	private int row;
-	private int col;
+	private int xLoc;
+	private int yLoc;
 	private ArrayList<TerrainHex.Resource> surroundingResources;
 	private ArrayList<Integer> surroundingNums;
 	private ArrayList<Hex> hexes;
@@ -12,23 +12,24 @@ public class Location {
 	private boolean isPort = false;
 	private OceanHex.Port port;
 	private int portSize;
+	private Player player;
 
-	public Location(int r, int c, int hexWidth) {
-		row = r;
-		col = c;
+	public Location(int x, int y, int hexWidth) {
+		xLoc = x;
+		yLoc = y;
 		portSize = hexWidth/6;
 		surroundingResources = new ArrayList<TerrainHex.Resource>();
 		surroundingNums = new ArrayList<Integer>();
 		hexes = new ArrayList<Hex>();
-		building = new Building(r, c, hexWidth);
+		building = new Building(xLoc, yLoc, hexWidth);
 	}
 
-	public int getRow() {
-		return row;
+	public int getXLoc() {
+		return xLoc;
 	}
 
-	public int getCol() {
-		return col;
+	public int getYLoc() {
+		return yLoc;
 	}
 
 	public void assign(TerrainHex.Resource r, int i) {
@@ -52,8 +53,10 @@ public class Location {
 		building.buildCity();;
 	}
 
-	public void makeSettlement() {
+	public void makeSettlement(Player p) {
 		building.buildSettlement();
+		player = p;
+		building.setOwner(player);
 	}
 	
 	public void makePort(OceanHex.Port p) {
@@ -64,7 +67,7 @@ public class Location {
 	public void draw(Graphics g) {
 		if(isPort) {
 			g.setColor(Color.LIGHT_GRAY);
-			g.fillOval(row - portSize/2, col - portSize/2, portSize, portSize);
+			g.fillOval(xLoc - portSize/2, yLoc - portSize/2, portSize, portSize);
 		}
 		building.draw(g);
 	}
