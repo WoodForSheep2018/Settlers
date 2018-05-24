@@ -190,8 +190,8 @@ public class Board {
 		int samePorts = 0;
 		for(int i = 0; i < spaces.size(); i++) {
 			for(int j = 0; j < h.getVertices().size(); j++) {
-				if(Math.abs(spaces.get(i).getRow() - h.getVertices().get(j).getRow()) < 3) {
-					if(Math.abs(spaces.get(i).getCol() - h.getVertices().get(j).getCol()) < 3) {
+				if(Math.abs(spaces.get(i).getXLoc() - h.getVertices().get(j).getXLoc()) < 3) {
+					if(Math.abs(spaces.get(i).getYLoc() - h.getVertices().get(j).getYLoc()) < 3) {
 						if(samePorts < 2)
 						spaces.get(i).makePort(p);
 						samePorts++;
@@ -226,8 +226,8 @@ public class Board {
 	
 	public boolean isSameLoc(Location loc) {
 		for(Location temp : spaces) {
-			if(Math.abs(loc.getRow() - temp.getRow()) < 3) {
-				if(Math.abs(loc.getCol() - temp.getCol()) < 3) {
+			if(Math.abs(loc.getXLoc() - temp.getXLoc()) < 3) {
+				if(Math.abs(loc.getYLoc() - temp.getYLoc()) < 3) {
 					return true;
 				}
 			}
@@ -237,8 +237,8 @@ public class Board {
 	
 	public int findSameLoc(Location loc) {
 		for(int i = 0; i < spaces.size(); i++) {
-			if(Math.abs(loc.getRow() - spaces.get(i).getRow()) < 3) {
-				if(Math.abs(loc.getCol() - spaces.get(i).getCol()) < 3) {
+			if(Math.abs(loc.getXLoc() - spaces.get(i).getXLoc()) < 3) {
+				if(Math.abs(loc.getYLoc() - spaces.get(i).getYLoc()) < 3) {
 					return i;
 				}
 			}
@@ -261,7 +261,7 @@ public class Board {
 	
 	public boolean checkAdjacentLocs(Location loc) {
 		for(int i = 0; i < spaces.size(); i++) {
-			if((Math.sqrt(Math.pow((loc.getRow() - spaces.get(i).getRow()), 2) + Math.pow((loc.getCol() - spaces.get(i).getCol()), 2))) < hexHeight/2) {
+			if((Math.sqrt(Math.pow((loc.getXLoc() - spaces.get(i).getXLoc()), 2) + Math.pow((loc.getYLoc() - spaces.get(i).getYLoc()), 2))) < hexHeight/2) {
 				if(spaces.get(i).hasSettlement() || spaces.get(i).hasCity()) {
 					return false;
 				}
@@ -269,8 +269,20 @@ public class Board {
 		}
 		return true;
 	}
+
+	public Location closestLoc(int x, int y) {
+		for(int i = 0; i < spaces.size(); i++) {
+			if(Math.abs(spaces.get(i).getXLoc() - x) < 20) {
+				if(Math.abs(spaces.get(i).getYLoc() - y) < 20) {
+					return spaces.get(i);
+				}
+			}
+		}
+		return null;
+	}
 		
 }
+
 
 
 
