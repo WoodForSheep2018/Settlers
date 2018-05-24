@@ -200,10 +200,6 @@ public class Board {
 			}
 		}
 	}
-	
-	public ArrayList<Location> getSpaces(){
-		return spaces;
-	}
 
 	public TerrainHex.Resource randomTile() {
 		int randIndex = (int)(Math.random()*availableTiles.size());

@@ -25,7 +25,6 @@ public class SettlersPanel extends JPanel {
 	private PlayerBox box4;
 	private Player currentPlayer;
 	private int turn;
-	private ArrayList<Location> spaces;
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Catan");
@@ -44,7 +43,6 @@ public class SettlersPanel extends JPanel {
 	
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		spaces = b.getSpaces();
 		player1 = new Player(b, "Alan");
 		playerList.add(player1);
 		player2 = new Player(b, "Devon");
@@ -110,11 +108,7 @@ public class SettlersPanel extends JPanel {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int bound = 20;				
-				
-				for(Location l:spaces) {
-					if(l.getXLoc())
-				}
+		
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
