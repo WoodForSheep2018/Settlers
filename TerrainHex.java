@@ -63,7 +63,6 @@ public class TerrainHex extends Hex {
 			}
 			g.drawImage(i, getXLoc() - getWidth()/4, getYLoc() - getHeight()/4, getWidth()/2, getHeight()/2, null);
 		}
-		}
 	}
 
 	public int getNumber() {
