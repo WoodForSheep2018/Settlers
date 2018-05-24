@@ -48,6 +48,7 @@ public class PlayerOptions extends Button {
 	public void addButtons() {
 		Button.menu.addButtons(profiles);
 		Button.menu.addButtons(colors);
+		Button.menu.addButton(namer);
 	}
 	public void addProfiles() {
 		Button.menu.addButtons(profiles);

@@ -145,7 +145,7 @@ public class MainMenu extends javax.swing.JPanel {
 		this.buttons.addAll(buttons);
 	}
 	public void removeButton(Button button) {
-		this.buttons.add(button);
+		this.buttons.remove(button);
 	}
 	public void removeButtons(ArrayList<Button> buttons) {
 		this.buttons.removeAll(buttons);

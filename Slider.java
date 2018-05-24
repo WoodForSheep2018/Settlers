@@ -30,7 +30,7 @@ public class Slider extends Button {
 				sliderLoc = steps.lastIndexOf(ss);
 			}
 		}
-		menu.showPlayerOptions(sliderLoc);
+		menu.setPlayerSlider(sliderLoc);
 	}
 
 	public void click() {
