@@ -66,7 +66,7 @@ public class Location {
 	
 	public void draw(Graphics g) {
 		if(isPort) {
-			g.setColor(Color.LIGHT_GRAY);
+			g.setColor(new Color(139, 69, 19));
 			g.fillOval(xLoc - portSize/2, yLoc - portSize/2, portSize, portSize);
 		}
 		building.draw(g);
