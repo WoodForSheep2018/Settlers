@@ -41,6 +41,11 @@ public class SettlersPanel extends JPanel {
 		setUpGameObjects();
 		startGame();
 	}
+	public SettlersPanel(MainMenu settings) {
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		setUpGameObjects(settings.getPlayers());
+		startGame();
+	}
 	
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
@@ -52,6 +57,16 @@ public class SettlersPanel extends JPanel {
 		playerList.add(player3);
 		player4 = new Player(b, "Maz", Color.YELLOW);
 		playerList.add(player4);
+		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, player1);
+		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, player2);
+		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, player3);
+		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, PANEL_HEIGHT/2, player4);
+	}
+	public void setUpGameObjects(ArrayList<PlayerOptions> players) {
+		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
+		for(int n = 0;n < players.size();n++) {
+			playerList.add(b,players.get(n).getName(),players.get(n).getColor());
+		}
 		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, player1);
 		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, player2);
 		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, player3);
