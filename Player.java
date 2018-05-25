@@ -20,23 +20,12 @@ public class Player {
 	private boolean isTurn;
 	private Color playerColor;
 
-	public Player(Board b, String str) {
+	public Player(Board b, String str, Color c) {
 		board = b;
 		name = str;
 		numPlayers++;
 		playerNum = numPlayers;
-		if(playerNum == 1) {
-			playerColor = Color.BLUE;
-		}
-		else if(playerNum == 2) {
-			playerColor = Color.RED;
-		}
-		else if(playerNum == 3) {
-			playerColor = Color.ORANGE;
-		}
-		else if(playerNum == 4) {
-			playerColor = Color.WHITE;
-		}
+		playerColor = c;
 	}
 
 	public void addCard(TerrainHex.Resource r) {
@@ -65,10 +54,6 @@ public class Player {
 	
 	public void revokeLargestArmy() {
 		largestArmy = false;
-	}
-	
-	public void setTurn(boolean bool) {
-		isTurn = bool;
 	}
 	
 	public void trade(Player trader, TerrainHex.Resource[] giveResources, TerrainHex.Resource[] receiveResources) {
@@ -169,7 +154,7 @@ public class Player {
 	}
 	
 	public void buildRoad() {
-		if (canBuildRoad()) {
+		if(canBuildRoad()) {
 			removeCardsOfType(TerrainHex.Resource.Brick,1);
 			removeCardsOfType(TerrainHex.Resource.Wood,1);
 			roadsLeft--;
@@ -178,7 +163,7 @@ public class Player {
 	}
 
 	public void buildSettlement() {
-		if (canBuildSettlement()) {
+		if(canBuildSettlement()) {
 			removeCardsOfType(TerrainHex.Resource.Brick,1);
 			removeCardsOfType(TerrainHex.Resource.Wood,1);
 			removeCardsOfType(TerrainHex.Resource.Wheat,1);
@@ -190,7 +175,7 @@ public class Player {
 	}
 
 	public void buildCity() {
-		if (canBuildCity()) {
+		if(canBuildCity()) {
 			removeCardsOfType(TerrainHex.Resource.Rock,3);
 			removeCardsOfType(TerrainHex.Resource.Wheat,2);
 			citiesLeft--;
@@ -200,7 +185,7 @@ public class Player {
 	}
 
 	public void buyDevCard() {
-		if (canBuyDevCard()) {
+		if(canBuyDevCard()) {
 			removeCardsOfType(TerrainHex.Resource.Rock,1);
 			removeCardsOfType(TerrainHex.Resource.Wheat,1);
 			removeCardsOfType(TerrainHex.Resource.Sheep,1);
@@ -303,5 +288,9 @@ public class Player {
 
 	public Color getColor() {
 		return playerColor;
+	}
+	
+	public void setTurn(boolean b) {
+		isTurn = b;
 	}
 }
