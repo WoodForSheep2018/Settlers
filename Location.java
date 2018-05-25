@@ -79,20 +79,4 @@ public class Location {
 	public boolean hasBuilding() {
 		return building!=null;
 	}
-	
-	public void onCoast() {
-		isOnCoast = true;
-	}
-	
-	public void up(boolean bool) {
-		upLoc = bool;
-	}
-	
-	public boolean isUpLoc() {
-		return upLoc;
-	}
-	
-	public boolean isOnCoast() {
-		return isOnCoast();
-	}
 }

@@ -12,6 +12,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 public class SettlersPanel extends JPanel {
+	public static SettlersOfCatanGame frame;
 	private final int PANEL_WIDTH = 1200;
 	private final int PANEL_HEIGHT = 800;
 	private Board b;
@@ -26,7 +27,7 @@ public class SettlersPanel extends JPanel {
 	private PlayerBox box4;
 	private Player currentPlayer;
 	private int turn;
-
+	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Catan");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,13 +36,18 @@ public class SettlersPanel extends JPanel {
 		frame.setVisible(true);
 		frame.setResizable(false);
 	}
-
+	
 	public SettlersPanel() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setUpGameObjects();
 		startGame();
 	}
-
+	public SettlersPanel(MainMenu settings) {
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		setUpGameObjects(settings.getPlayers());
+		startGame();
+	}
+	
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
 		player1 = new Player(b, "Alan", Color.BLUE);
@@ -57,13 +63,23 @@ public class SettlersPanel extends JPanel {
 		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, player3);
 		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, PANEL_HEIGHT/2, player4);
 	}
-
+	public void setUpGameObjects(ArrayList<PlayerOptions> players) {
+		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
+		for(int n = 0;n < players.size();n++) {
+			playerList.add(new Player(b,players.get(n).getName(),players.get(n).getColor()));
+		}
+		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, playerList.get(0));
+		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, playerList.get(1));
+		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, playerList.get(2));
+		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, PANEL_HEIGHT/2, playerList.get(3));
+	}
+	
 	public void startGame() {
 		turn = 1;
 		pickStartingPlayer();
-		setupMouseListeners();
+		pickStartingSettlements();
 	}
-
+	
 	public void pickStartingPlayer() {
 		int start = (int)(Math.random()*4 + 1);
 		for(Player p : playerList) {
@@ -73,7 +89,7 @@ public class SettlersPanel extends JPanel {
 			}
 		}
 	}
-
+	
 	public void nextTurn() {
 		turn++;
 		currentPlayer.setTurn(false);
@@ -91,28 +107,21 @@ public class SettlersPanel extends JPanel {
 			}
 		}
 	}
-
-	public void setupMouseListeners() {
-		this.addMouseListener(new MouseListener() {
+	
+	public void pickStartingSettlements() {
+		MouseListener settlementPicker = new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(turn < 9) {
-					int x = e.getX();
-					int y = e.getY();
-					System.out.println(x + " " + y);
-					if(b.closestLoc(x,y) != null) {
-						if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
-							b.closestLoc(x,y).makeSettlement(currentPlayer);
-							repaint();
-							nextTurn();
-						}
+				int x = e.getX();
+				int y = e.getY();
+				System.out.println(x + " " + y);
+				if(b.closestLoc(x,y) != null) {
+					if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
+						b.closestLoc(x,y).makeSettlement(currentPlayer);
+						repaint();
+						nextTurn();
 					}
 				}
-				
-				
-				
-				
-				
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -130,9 +139,10 @@ public class SettlersPanel extends JPanel {
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub	
 			}
-		});
-	}	
-
+		};
+		this.addMouseListener(settlementPicker);
+	}
+	
 	public boolean gameOver() {
 		for(Player p : playerList) {
 			if(p.getPoints() >= 10) {
@@ -141,7 +151,7 @@ public class SettlersPanel extends JPanel {
 		}
 		return false;
 	}
-
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		b.draw(g);

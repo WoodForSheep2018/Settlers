@@ -87,8 +87,8 @@ public class Board {
 
 		setTileLocs();
 		setUpPorts();
-		setCoastalLocs();
-		setUpOrDown();
+//		setCoastalLocs();
+//		setUpOrDown();
 	}
 
 	public void setTileLocs() {
@@ -283,91 +283,41 @@ public class Board {
 		return null;
 	}
 	
-	public void setUpOrDown() {
-		for(Location loc:spaces) {
-			Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
-			Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
-			Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
-			Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
+//	public void setUpOrDown() {
+//		for(Location loc:spaces) {
+//			Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
+//			Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
+//			Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
+//			Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
+//
+//			if(up==null)
+//				loc.up(false);
+//			else if(down==null)
+//				loc.up(true);
+//		}
+//	}
+//		
+//	public void setCoastalLocs() {
+//		for(Location loc:spaces) {
+//			if(loc.isUpLoc()) {
+//				Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
+//				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
+//				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
+//				
+//				if(up==null || left==null || right==null) {
+//					loc.onCoast();
+//				}
+//			}
+//			else if(!loc.isUpLoc()) {
+//				Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
+//				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
+//				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
+//				
+//				if(down==null || left==null || right==null) {
+//					loc.onCoast();
+//				}
+//			}
+//		}
+//	}
 
-			if(up==null)
-				loc.up(false);
-			else if(down==null)
-				loc.up(true);
-		}
-	}
-		
-	public void setCoastalLocs() {
-		for(Location loc:spaces) {
-			if(loc.isUpLoc()) {
-				Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
-				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
-				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
-				
-				if(up==null || left==null || right==null) {
-					loc.onCoast();
-				}
-			}
-			else if(!loc.isUpLoc()) {
-				Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
-				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
-				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
-				
-				if(down==null || left==null || right==null) {
-					loc.onCoast();
-				}
-			}
-		}
-	}
 }
-
-
-
-id draw(Graphics g) {
-		g.setColor(new Color(153,255,255));
-		g.fillRect(boardXLoc, 0, boardWidth, boardHeight);
-
-		for(int r = 0; r < hexArr.length; r++) {
-			for(int c = 0; c < hexArr[r].length; c++) {
-				hexArr[r][c].draw(g);
-			}
-		}
-	}
-
-	public void makeDevCardDeck() {
-		for (int k = 0; k < 28; k++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Knight,this));
-		}
-		for (int vp = 0; vp < 10; vp++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.VictoryPoint,this));
-		}
-		for (int rb = 0; rb < 4; rb++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.RoadBuilding,this));
-		}
-		for (int m = 0; m < 4; m++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Monopoly,this));
-		}
-		for (int yop = 0; yop < 4; yop++) {
-			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.YearOfPlenty,this));
-		}
-
-		ArrayList<DevelopmentCard> temp = new ArrayList<DevelopmentCard>();
-		for (int i = 0; i < 50; i++) {
-			int rand = (int) (Math.random() * 50);
-			while (temp.contains(devCardDeck.get(rand))) {
-				rand = (int) (Math.random() * 50);
-			}
-			temp.add(devCardDeck.get(rand));
-		}
-		devCardDeck=temp;
-	}
-	
-	public DevelopmentCard takeDevCard() {
-		DevelopmentCard dc = devCardDeck.get(0);
-		devCardDeck.remove(0);
-		return dc;
-	}
-}
-
-
-
