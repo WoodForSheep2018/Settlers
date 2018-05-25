@@ -13,6 +13,8 @@ public class Location {
 	private OceanHex.Port port;
 	private int portSize;
 	private Player player;
+	private boolean upLoc;
+	private boolean isOnCoast;
 
 	public Location(int x, int y, int hexWidth) {
 		xLoc = x;

@@ -18,6 +18,7 @@ public class Board {
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
 	private ArrayList<Location> spaces = new ArrayList<Location>();
 	private boolean isDesert = false;
+	private ArrayList<DevelopmentCard> devCardDeck = new ArrayList<DevelopmentCard>();
 
 	public Board(int pw, int ph) {
 		hexArr[0] = new Hex[4];
@@ -316,20 +317,6 @@ public class Board {
 				if(down==null || left==null || right==null) {
 					loc.onCoast();
 				}
-			}
-		}
-	}
-}
-
-
-
-id draw(Graphics g) {
-		g.setColor(new Color(153,255,255));
-		g.fillRect(boardXLoc, 0, boardWidth, boardHeight);
-
-		for(int r = 0; r < hexArr.length; r++) {
-			for(int c = 0; c < hexArr[r].length; c++) {
-				hexArr[r][c].draw(g);
 			}
 		}
 	}
