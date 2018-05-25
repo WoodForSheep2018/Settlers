@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -43,13 +44,13 @@ public class SettlersPanel extends JPanel {
 	
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		player1 = new Player(b, "Ev");
+		player1 = new Player(b, "Alan", Color.BLUE);
 		playerList.add(player1);
-		player2 = new Player(b, "Devon");
+		player2 = new Player(b, "Devon", Color.RED);
 		playerList.add(player2);
-		player3 = new Player(b, "Payton");
+		player3 = new Player(b, "Payton", Color.PINK);
 		playerList.add(player3);
-		player4 = new Player(b, "Maz");
+		player4 = new Player(b, "Maz", Color.YELLOW);
 		playerList.add(player4);
 		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, player1);
 		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, player2);
@@ -60,10 +61,7 @@ public class SettlersPanel extends JPanel {
 	public void startGame() {
 		turn = 1;
 		pickStartingPlayer();
-		while(turn < 9) {
-			pickStartingSettlements();
-			turn++;
-		}
+		pickStartingSettlements();
 	}
 	
 	public void pickStartingPlayer() {
@@ -95,24 +93,23 @@ public class SettlersPanel extends JPanel {
 	}
 	
 	public void pickStartingSettlements() {
-		this.addMouseListener(new MouseListener() {
+		MouseListener settlementPicker = new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int x = e.getX();
 				int y = e.getY();
+				System.out.println(x + " " + y);
 				if(b.closestLoc(x,y) != null) {
-					if(b.closestLoc(x, y).isOnCoast()) {
-						
+					if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
+						b.closestLoc(x,y).makeSettlement(currentPlayer);
+						repaint();
+						nextTurn();
 					}
-					
-					b.closestLoc(x,y).makeSettlement(currentPlayer);
-					repaint();
-					nextTurn();
 				}
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-		
+				// TODO Auto-generated method stub	
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -126,7 +123,8 @@ public class SettlersPanel extends JPanel {
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub	
 			}
-		});
+		};
+		this.addMouseListener(settlementPicker);
 	}
 	
 	public boolean gameOver() {
