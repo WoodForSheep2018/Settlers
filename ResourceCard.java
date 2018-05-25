@@ -19,5 +19,4 @@ public class ResourceCard extends Card {
 	public void play(Player owner) {
 		
 	}
-
 }
