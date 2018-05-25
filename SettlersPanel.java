@@ -26,6 +26,7 @@ public class SettlersPanel extends JPanel {
 	private PlayerBox box4;
 	private Player currentPlayer;
 	private int turn;
+	private DiceButton diceButton;
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Catan");
@@ -44,7 +45,8 @@ public class SettlersPanel extends JPanel {
 
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		player1 = new Player(b, "Alan", Color.BLUE);
+		diceButton = new DiceButton(new Dice());
+		player1 = new Player(b, "Ev", Color.BLUE);
 		playerList.add(player1);
 		player2 = new Player(b, "Devon", Color.RED);
 		playerList.add(player2);
@@ -145,6 +147,7 @@ public class SettlersPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		b.draw(g);
+		diceButton.draw(g);
 		box1.draw(g);
 		box2.draw(g);
 		box3.draw(g);
