@@ -19,7 +19,7 @@ public class Building {
 	public void buildSettlement() {
 		level = 1;
 	}
-	
+
 	public void buildCity() {
 		level = 2;
 	}
@@ -27,7 +27,7 @@ public class Building {
 	public boolean isASettlement() { 
 		return level == 1; 
 	}
-	
+
 	public boolean isACity() { 
 		return level == 2; 
 	}
@@ -41,16 +41,17 @@ public class Building {
 	}
 
 	public void draw(Graphics g) {
-//		g.setColor(owner.getColor());
-		g.setColor(Color.PINK);
-		if(level == 1) {
-			g.fillRect(xLoc - size/2, yLoc - size/2, size, size);
-			g.fillPolygon(new int[]{xLoc-size/2, xLoc, xLoc+size/2}, new int[]{yLoc-size/2, yLoc-size, yLoc-size/2}, 3);
-		}
-		if(level == 2) {
-			g.fillRect(xLoc, yLoc, size, size);
-			g.fillRect(xLoc - size, yLoc - size/2, size, (3*size)/2);
-			g.fillPolygon(new int[]{xLoc-size, xLoc-size/2, xLoc}, new int[]{yLoc-size/2, yLoc-size, yLoc-size/2}, 3);
+		if(owner != null) {
+			g.setColor(owner.getColor());
+			if(level == 1) {
+				g.fillRect(xLoc - size/2, yLoc - size/2, size, size);
+				g.fillPolygon(new int[]{xLoc-size/2, xLoc, xLoc+size/2}, new int[]{yLoc-size/2, yLoc-size, yLoc-size/2}, 3);
+			}
+			if(level == 2) {
+				g.fillRect(xLoc, yLoc, size, size);
+				g.fillRect(xLoc - size, yLoc - size/2, size, (3*size)/2);
+				g.fillPolygon(new int[]{xLoc-size, xLoc-size/2, xLoc}, new int[]{yLoc-size/2, yLoc-size, yLoc-size/2}, 3);
+			}
 		}
 	}
 
