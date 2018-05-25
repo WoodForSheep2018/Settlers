@@ -13,8 +13,6 @@ public class Location {
 	private OceanHex.Port port;
 	private int portSize;
 	private Player player;
-	private boolean isOnCoast;
-	private boolean upLoc;
 
 	public Location(int x, int y, int hexWidth) {
 		xLoc = x;
@@ -38,7 +36,7 @@ public class Location {
 		surroundingResources.add(r);
 		surroundingNums.add(i);
 	}
-	
+
 	public void assignHex(Hex h) {
 		hexes.add(h);
 	}
@@ -52,28 +50,26 @@ public class Location {
 	}
 
 	public void makeCity() {
-		building.buildCity();
+		building.buildCity();;
 	}
 
 	public void makeSettlement(Player p) {
-		building.buildSettlement();
 		player = p;
 		building.setOwner(player);
+		building.buildSettlement();
 	}
-	
+
 	public void makePort(OceanHex.Port p) {
 		port = p;
 		isPort = true;
 	}
-	
+
 	public void draw(Graphics g) {
 		if(isPort) {
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillOval(xLoc - portSize/2, yLoc - portSize/2, portSize, portSize);
 		}
-		if(building != null) {
-			building.draw(g);
-		}
+		building.draw(g);
 	}
 	
 	public Building getBuilding() {
