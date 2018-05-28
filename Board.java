@@ -17,6 +17,7 @@ public class Board {
 	private ArrayList<TerrainHex.Resource> availableTiles = new ArrayList<TerrainHex.Resource>();
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
 	private ArrayList<Location> spaces = new ArrayList<Location>();
+	private ArrayList<Road> roads = new ArrayList<Road>();
 	private boolean isDesert = false;
 
 	public Board(int pw, int ph) {
@@ -257,6 +258,9 @@ public class Board {
 		for(Location loc : spaces) {
 			loc.draw(g);
 		}
+		for(Road r : roads) {
+			r.draw(g);
+		}
 	}
 	
 	public boolean checkAdjacentLocs(Location loc) {
@@ -281,13 +285,15 @@ public class Board {
 		return null;
 	}
 	
-	public boolean isAdjacent(int x, int y) {
-		for(int i = 0; i < spaces.size(); i++) {
-			if((Math.sqrt(Math.pow((x - spaces.get(i).getXLoc()), 2) + Math.pow((y - spaces.get(i).getYLoc()), 2))) < hexHeight/2 + 5) {
+	public boolean isAdjacent(int x1, int y1, int x2, int y2) {
+		if((Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))) < hexHeight/2 + 5) {
 				return true;
-			}
 		}
 		return false;
+	}
+	
+	public void addRoad(Road r) {
+		roads.add(r);
 	}
 	
 	public void setUpOrDown() {
