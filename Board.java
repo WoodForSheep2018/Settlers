@@ -18,7 +18,6 @@ public class Board {
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
 	private ArrayList<Location> spaces = new ArrayList<Location>();
 	private boolean isDesert = false;
-	private ArrayList<DevelopmentCard> devCardDeck = new ArrayList<DevelopmentCard>();
 
 	public Board(int pw, int ph) {
 		hexArr[0] = new Hex[4];
@@ -88,8 +87,6 @@ public class Board {
 
 		setTileLocs();
 		setUpPorts();
-		setCoastalLocs();
-		setUpOrDown();
 	}
 
 	public void setTileLocs() {
@@ -264,7 +261,7 @@ public class Board {
 	
 	public boolean checkAdjacentLocs(Location loc) {
 		for(int i = 0; i < spaces.size(); i++) {
-			if((Math.sqrt(Math.pow((loc.getXLoc() - spaces.get(i).getXLoc()), 2) + Math.pow((loc.getYLoc() - spaces.get(i).getYLoc()), 2))) < hexHeight/2) {
+			if((Math.sqrt(Math.pow((loc.getXLoc() - spaces.get(i).getXLoc()), 2) + Math.pow((loc.getYLoc() - spaces.get(i).getYLoc()), 2))) < hexHeight/2 + 5) {
 				if(spaces.get(i).hasSettlement() || spaces.get(i).hasCity()) {
 					return false;
 				}
@@ -282,6 +279,15 @@ public class Board {
 			}
 		}
 		return null;
+	}
+	
+	public boolean isAdjacent(int x, int y) {
+		for(int i = 0; i < spaces.size(); i++) {
+			if((Math.sqrt(Math.pow((x - spaces.get(i).getXLoc()), 2) + Math.pow((y - spaces.get(i).getYLoc()), 2))) < hexHeight/2 + 5) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void setUpOrDown() {
