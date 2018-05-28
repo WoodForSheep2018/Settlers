@@ -26,7 +26,9 @@ public class SettlersPanel extends JPanel {
 	private PlayerBox box4;
 	private Player currentPlayer;
 	private int turn;
-	private DiceButton diceButton;
+	private boolean roadAfterSettlement = false;
+	private int settlementX = 0;
+	private int settlementY = 0;
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Catan");
@@ -45,8 +47,7 @@ public class SettlersPanel extends JPanel {
 
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		diceButton = new DiceButton(new Dice());
-		player1 = new Player(b, "Ev", Color.BLUE);
+		player1 = new Player(b, "Alan", Color.BLUE);
 		playerList.add(player1);
 		player2 = new Player(b, "Devon", Color.RED);
 		playerList.add(player2);
@@ -63,7 +64,7 @@ public class SettlersPanel extends JPanel {
 	public void startGame() {
 		turn = 1;
 		pickStartingPlayer();
-		setupMouseListeners();
+		setupMouseListener();
 	}
 
 	public void pickStartingPlayer() {
@@ -94,24 +95,37 @@ public class SettlersPanel extends JPanel {
 		}
 	}
 
-	public void setupMouseListeners() {
+	public void setupMouseListener() {
 		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(turn < 9) {
-					int x = e.getX();
-					int y = e.getY();
-					System.out.println(x + " " + y);
-					if(b.closestLoc(x,y) != null) {
-						if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
-							b.closestLoc(x,y).makeSettlement(currentPlayer);
+					if(roadAfterSettlement == false) {
+						settlementX = e.getX();
+						settlementY = e.getY();
+						if(b.closestLoc(settlementX, settlementY) != null) {
+							if(b.checkAdjacentLocs(b.closestLoc(settlementX, settlementY))) {
+								b.closestLoc(settlementX, settlementY).makeSettlement(currentPlayer);
+								roadAfterSettlement = true;
+								repaint();
+							}
+						}
+					}
+					else if(roadAfterSettlement == true) {
+						int x = e.getX();
+						int y = e.getY();
+						int roadFinalX = b.closestLoc(x,y).getXLoc();
+						int roadFinalY = b.closestLoc(x,y).getYLoc();
+						if(b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
+							b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
+							settlementX = 0;
+							settlementY = 0;
 							repaint();
+							roadAfterSettlement = false;
 							nextTurn();
 						}
 					}
 				}
-				
-				
 				
 				
 				
@@ -147,7 +161,6 @@ public class SettlersPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		b.draw(g);
-		diceButton.draw(g);
 		box1.draw(g);
 		box2.draw(g);
 		box3.draw(g);
