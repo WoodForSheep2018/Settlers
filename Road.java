@@ -16,7 +16,7 @@ public class Road {
 		finalY = y2;
 		owner = p;
 
-		if(Math.abs(startX - finalX) < 2) {
+		if((startX - finalX < 2 && startX - finalX > 0) || (finalX - startX < 2 && finalX - startX > 0)) {
 			xPoints = new int[] {startX + 3, finalX + 3, finalX - 3, startX - 3};
 			yPoints = new int[] {startY, finalY, finalY, startY};
 		}
