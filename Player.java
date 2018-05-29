@@ -309,5 +309,9 @@ public class Player {
 	public void changeCities(int n) {
 		citiesLeft += n;
 	}
+	
+	public boolean getTurn() {
+		return isTurn;
+	}
 
 }
