@@ -336,4 +336,16 @@ public class Board {
 		devCardDeck.remove(0);
 		return dc;
 	}
+	
+	public int getBoardXLoc() {
+		return boardXLoc;
+	}
+	
+	public int getBoardWidth() {
+		return boardWidth;
+	}
+	
+	public int getBoardHeight() {
+		return boardHeight;
+	}
 }
