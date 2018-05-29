@@ -27,14 +27,13 @@ public class SettlersPanel extends JPanel {
 	private PlayerBox box4;
 	private Player currentPlayer;
 	private int turn;
-  
+	private boolean diceRolled = false;
 	private boolean roadAfterSettlement = false;
 	private int settlementX = 0;
 	private int settlementY = 0;
 	private DiceButton diceButton;
 	private MenuButton menuButton;
 	private int curRoll = 0;
-	private boolean hasRolled = false;
 	private int x;
 	private int y;
 
@@ -46,12 +45,13 @@ public class SettlersPanel extends JPanel {
 		frame.setVisible(true);
 		frame.setResizable(false);
 	}
-	
+
 	public SettlersPanel() {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setUpGameObjects();
 		startGame();
 	}
+
 	public SettlersPanel(MainMenu settings) {
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setUpGameObjects(settings.getPlayers());
@@ -60,57 +60,61 @@ public class SettlersPanel extends JPanel {
 
 	public void doTurn() {
 		rollDice();
-		doPlayerActions();
+		if (diceRolled) {
+			doPlayerActions();
+		}
 
 	}
 
 	public void doPlayerActions() {
-		if(x>=300 && x<=450 && y>=640 && y<=760) {
-			
-		}	
-		else if(x>=300 && x<=450 && y>=640 && y<=760) {
+		if (x >= 300 && x <= 450 && y >= 640 && y <= 760) {
+
+		} else if (x >= 450 && x <= 600 && y >= 640 && y <= 760) {
 			currentPlayer.buildRoad();
-		}	
-		else if(x>=300 && x<=450 && y>=640 && y<=760) {
+			System.out.println(currentPlayer.findNumOfCardsOfType(TerrainHex.Resource.Brick));
+			repaint();
+			int startX = x;
+			int startY = y;
+			b.addRoad(new Road(startX,startY,x,y,currentPlayer));
+		} else if (x >= 600 && x <= 750 && y >= 640 && y <= 760) {
 			currentPlayer.buildSettlement();
-		}	
-		else if(x>=300 && x<=450 && y>=640 && y<=760) {
+		} else if (x >= 750 && x <= 900 && y >= 640 && y <= 760) {
 			currentPlayer.buildCity();
-		}	
-		else if(x>=300 && x<=900 && y>=760 && y<=800) {
+		} else if (x >= 300 && x <= 900 && y >= 760 && y <= 800) {
+			System.out.println("good");
 			nextTurn();
-		}	
+		}
 	}
 
 	public void rollDice() {
-		if(x>=diceButton.getXMin() 
-				&& x<=diceButton.getXMax()
-				&& y>=diceButton.getYMin()
-				&& y<=diceButton.getYMax()) {
-			curRoll = diceButton.roll();
-			b.giveResources(curRoll);
-			repaint();
-		}				
+		if (!diceRolled) {
+			if (x >= diceButton.getXMin() && x <= diceButton.getXMax() && y >= diceButton.getYMin()
+					&& y <= diceButton.getYMax()) {
+				curRoll = diceButton.roll();
+				b.giveResources(curRoll);
+				diceRolled = true;
+				repaint();
+			}
+		}
 	}
 
 	public void pickStartingSettlements() {
-		if(roadAfterSettlement == false) {
-			if(b.closestLoc(x,y) != null) {
-				settlementX = b.closestLoc(x,y).getXLoc();
-				settlementY = b.closestLoc(x,y).getYLoc();
-				if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
-					b.closestLoc(x,y).makeSettlement(currentPlayer);
+		if (roadAfterSettlement == false) {
+			if (b.closestLoc(x, y) != null) {
+				settlementX = b.closestLoc(x, y).getXLoc();
+				settlementY = b.closestLoc(x, y).getYLoc();
+				if (b.checkAdjacentLocs(b.closestLoc(x, y))) {
+					b.closestLoc(x, y).makeSettlement(currentPlayer);
 					currentPlayer.changeSets(-1);
 					repaint();
 					roadAfterSettlement = true;
 				}
 			}
-		}
-		else if(roadAfterSettlement == true) {
-			if(b.closestLoc(x,y) != null) {
-				int roadFinalX = b.closestLoc(x,y).getXLoc();
-				int roadFinalY = b.closestLoc(x,y).getYLoc();
-				if(b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
+		} else if (roadAfterSettlement == true) {
+			if (b.closestLoc(x, y) != null) {
+				int roadFinalX = b.closestLoc(x, y).getXLoc();
+				int roadFinalY = b.closestLoc(x, y).getYLoc();
+				if (b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
 					b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
 					currentPlayer.changeRoads(-1);
 					repaint();
@@ -127,36 +131,38 @@ public class SettlersPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
-				if(turn < 9) {
+				if (turn < 9) {
 					pickStartingSettlements();
-				}
-				else {
+				} else {
 					doTurn();
 				}
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub	
+				// TODO Auto-generated method stub
 			}
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub	
+				// TODO Auto-generated method stub
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub	
+				// TODO Auto-generated method stub
 			}
 		});
-	}	
+	}
 
 	public void setUpGameObjects() {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		player1 = new Player(b, "Alan", Color.BLUE);
+		player1 = new Player(b, "Ev", Color.BLUE);
 		playerList.add(player1);
 		player2 = new Player(b, "Devon", Color.YELLOW);
 		playerList.add(player2);
@@ -165,80 +171,80 @@ public class SettlersPanel extends JPanel {
 		player4 = new Player(b, "Maz", Color.MAGENTA);
 		playerList.add(player4);
 		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, player1);
-		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, player2);
-		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, player3);
-		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, PANEL_HEIGHT/2, player4);
+		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT / 2, player2);
+		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, 0, player3);
+		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, PANEL_HEIGHT / 2, player4);
 		diceButton = new DiceButton();
 		menuButton = new MenuButton();
 	}
+
 	public void setUpGameObjects(ArrayList<PlayerOptions> players) {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		for(int n = 0;n < players.size();n++) {
-			for(int i = 0;i < n;i++) {
-				if(players.get(n).getColor().equals(players.get(i).getColor())) {
-					players.get(n).changeColor(
-							new Color(
-									(int)(players.get(n).getColor().getRed()*.85),
-									(int)(players.get(n).getColor().getGreen()*.85),
-									(int)(players.get(n).getColor().getBlue()*.85)
-									));
+		for (int n = 0; n < players.size(); n++) {
+			for (int i = 0; i < n; i++) {
+				if (players.get(n).getColor().equals(players.get(i).getColor())) {
+					players.get(n)
+							.changeColor(new Color((int) (players.get(n).getColor().getRed() * .9),
+									(int) (players.get(n).getColor().getGreen() * .9),
+									(int) (players.get(n).getColor().getBlue() * .9)));
 				}
 			}
-			playerList.add(new Player(b,players.get(n).getName(),players.get(n).getColor()));
+			playerList.add(new Player(b, players.get(n).getName(), players.get(n).getColor()));
 		}
 		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, playerList.get(0));
-		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, playerList.get(1));
-		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, playerList.get(2));
-		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, PANEL_HEIGHT/2, playerList.get(3));
+		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT / 2, playerList.get(1));
+		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, 0, playerList.get(2));
+		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, PANEL_HEIGHT / 2, playerList.get(3));
 		diceButton = new DiceButton();
 		menuButton = new MenuButton();
 	}
-	
+
 	public void startGame() {
 		turn = 1;
 		pickStartingPlayer();
 		pickStartingSettlements();
 		setUpMouseListener();
-		
+
 	}
-	
+
 	public void pickStartingPlayer() {
-		int start = (int)(Math.random()*4 + 1);
-		for(Player p : playerList) {
-			if(p.getPlayerNumber() == start) {
+		int start = (int) (Math.random() * 4 + 1);
+		for (Player p : playerList) {
+			if (p.getPlayerNumber() == start) {
 				currentPlayer = p;
 				currentPlayer.setTurn(true);
 			}
 		}
 	}
-	
+
 	public void nextTurn() {
+		diceRolled = false;
 		turn++;
 		currentPlayer.setTurn(false);
 		int current = currentPlayer.getPlayerNumber();
-		if(current < 4) {
+		if (current < 4) {
 			current++;
-		}
-		else {
+		} else {
 			current = 1;
 		}
-		for(Player p : playerList) {
-			if(p.getPlayerNumber() == current) {
+		for (Player p : playerList) {
+			if (p.getPlayerNumber() == current) {
 				currentPlayer = p;
 				currentPlayer.setTurn(true);
 			}
 		}
+		repaint();
 	}
-	
+
 	public boolean gameOver() {
-		for(Player p : playerList) {
-			if(p.getPoints() >= 10) {
+		for (Player p : playerList) {
+			if (p.getPoints() >= 10) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		b.draw(g);

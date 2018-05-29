@@ -211,7 +211,8 @@ public class Player {
 		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
 		for (int i = 0; i < resourceCards.size(); i++) {
 			if (num > 0 && resourceCards.get(i).getResource().equals(r)) {
-				cards.add(resourceCards.remove(i));
+				cards.add(resourceCards.get(i));
+				resourceCards.remove(i);
 				i--;
 				num--;
 			}

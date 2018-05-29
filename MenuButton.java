@@ -26,19 +26,20 @@ public class MenuButton {
 
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.fillRect(xMin, 640, 150, 120);
-		g.fillRect(450, 640, 150, 120);
-		g.fillRect(600, 640, 150, 120);
-		g.fillRect(750, 640, 150, 120);
-		g.fillRect(xMin, 760, 600, 40);
+		g.fillRect(xMin, 640, 600, 160);
 
 		g.setColor(Color.BLACK);
+		g.drawRect(xMin, 640, 150, 120);
+		g.drawRect(450, 640, 150, 120);
+		g.drawRect(600, 640, 150, 120);
+		g.drawRect(750, 640, 150, 120);
+		g.drawRect(xMin, 760, 600, 39);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
 		g.drawString("Play development card", xMin, 720);
-		g.drawString("Build road", 470, 720);
-		g.drawString("Build settlement", 600, 720);
-		g.drawString("Build city", 750, 720);
-		g.drawString("End turn", 550, 770);
+		g.drawString("Build road", 500, 720);//first click is startLoc, second is endLoc
+		g.drawString("Build settlement", 630, 720);
+		g.drawString("Build city", 790, 720);
+		g.drawString("End turn", 550, 780);
 
 	}
 }

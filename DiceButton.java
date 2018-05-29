@@ -40,9 +40,9 @@ public class DiceButton extends JPanel{
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(xMin, yMin, 100, 100);
-		g.setFont(new Font("TimesRoman", Font.ITALIC, 19));
+		g.setFont(new Font("TimesRoman", Font.ITALIC, 16));
 		g.setColor(Color.BLACK);
-		g.drawString("Click to roll", 300, 20);
+		g.drawString("Click to roll", 300, 15);
 		g.setFont(new Font("TimesRoman", Font.BOLD, 30));
 		if(roll>0)
 			g.drawString(""+roll, 340, 60);
