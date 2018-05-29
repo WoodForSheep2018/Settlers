@@ -27,8 +27,10 @@ public class SettlersPanel extends JPanel {
 	private Player currentPlayer;
 	private int turn;
 	private boolean roadAfterSettlement = false;
-	private int settlementX = 0;
-	private int settlementY = 0;
+	private int settlementX;
+	private int settlementY;
+	private int x;
+	private int y;
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Catan");
@@ -94,46 +96,45 @@ public class SettlersPanel extends JPanel {
 			}
 		}
 	}
+	
+	public void pickStartingSettlement() {
+		if(roadAfterSettlement == false) {
+			if(b.closestLoc(x,y) != null) {
+				settlementX = b.closestLoc(x,y).getXLoc();
+				settlementY = b.closestLoc(x,y).getYLoc();
+				if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
+					b.closestLoc(x,y).makeSettlement(currentPlayer);
+					repaint();
+					roadAfterSettlement = true;
+				}
+			}
+		}
+		else if(roadAfterSettlement == true) {
+			if(b.closestLoc(x,y) != null) {
+				int roadFinalX = b.closestLoc(x,y).getXLoc();
+				int roadFinalY = b.closestLoc(x,y).getYLoc();
+				if(b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
+					b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
+					repaint();
+					roadAfterSettlement = false;
+					nextTurn();
+				}
+			}
+		}
+	}
 
 	public void setupMouseListener() {
 		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				x = e.getX();
+				y = e.getY();
 				if(turn < 9) {
-					if(roadAfterSettlement == false) {
-						int x = e.getX();
-						int y = e.getY();
-						if(b.closestLoc(x,y) != null) {
-							settlementX = b.closestLoc(x,y).getXLoc();
-							settlementY = b.closestLoc(x,y).getYLoc();
-							if(b.checkAdjacentLocs(b.closestLoc(settlementX, settlementY))) {
-								b.closestLoc(settlementX, settlementY).makeSettlement(currentPlayer);
-								repaint();
-								roadAfterSettlement = true;
-							}
-						}
-					}
-					else if(roadAfterSettlement == true) {
-						int x = e.getX();
-						int y = e.getY();
-						if(b.closestLoc(x,y) != null) {
-							int roadFinalX = b.closestLoc(x,y).getXLoc();
-							int roadFinalY = b.closestLoc(x,y).getYLoc();
-							if(b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
-								b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
-								repaint();
-								settlementX = 0;
-								settlementY = 0;
-								roadAfterSettlement = false;
-								nextTurn();
-							}
-						}
-					}
+					pickStartingSettlement();
 				}
-
-
-
-
+				else {
+					
+				}	
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
