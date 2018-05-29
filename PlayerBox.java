@@ -20,18 +20,7 @@ public class PlayerBox {
 	
 	public void draw(Graphics g) {
 		//box
-		if(player.getPlayerNumber() == 1) {
-			g.setColor(Color.RED);
-		}
-		else if(player.getPlayerNumber() == 2) {
-			g.setColor(Color.BLUE);
-		}
-		else if(player.getPlayerNumber() == 3) {
-			g.setColor(Color.GREEN);
-		}
-		else if(player.getPlayerNumber() == 4) {
-			g.setColor(Color.YELLOW);
-		}
+		g.setColor(player.getColor());
 		g.fillRect(xLoc, yLoc, boxWidth, boxHeight);
 		
 		//name
