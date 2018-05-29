@@ -217,40 +217,6 @@ public class SettlersPanel extends JPanel {
 			}
 		}
 	}
-	public void pickStartingSettlements() {
-		MouseListener settlementPicker = new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println(x + " " + y);
-				if(b.closestLoc(x,y) != null) {
-					if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
-						b.closestLoc(x,y).makeSettlement(currentPlayer);
-						repaint();
-						nextTurn();
-					}
-				}
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub	
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub	
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub	
-			}
-		};
-		this.addMouseListener(settlementPicker);
-	}
 	
 	public boolean gameOver() {
 		for(Player p : playerList) {
