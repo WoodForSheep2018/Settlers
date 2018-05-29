@@ -32,12 +32,16 @@ public class Building {
 		return level == 2; 
 	}
 
-	public void setOwner(Player p) { 
-		owner = p; 
-	}
-
 	public Player getOwner() { 
 		return owner; 
+	}
+	
+	public boolean hasOwner() {
+		return owner != null;
+	}
+	
+	public void setOwner(Player p) {
+		owner = p;
 	}
 
 	public void draw(Graphics g) {

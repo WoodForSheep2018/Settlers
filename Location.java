@@ -14,6 +14,7 @@ public class Location {
 	private int portSize;
 	private Player player;
 
+
 	public Location(int x, int y, int hexWidth) {
 		xLoc = x;
 		yLoc = y;
@@ -30,6 +31,14 @@ public class Location {
 
 	public int getYLoc() {
 		return yLoc;
+	}
+	
+	public ArrayList<Hex> getHexes(){
+		return hexes;
+	}
+	
+	public ArrayList<Integer> getNums(){
+		return surroundingNums;
 	}
 
 	public void assign(TerrainHex.Resource r, int i) {
@@ -50,13 +59,15 @@ public class Location {
 	}
 
 	public void makeCity() {
-		building.buildCity();;
+		building.buildCity();
+		player.incrementPoints();
 	}
 
 	public void makeSettlement(Player p) {
 		player = p;
 		building.setOwner(player);
 		building.buildSettlement();
+		player.incrementPoints();
 	}
 
 	public void makePort(OceanHex.Port p) {
@@ -80,3 +91,4 @@ public class Location {
 		return building!=null;
 	}
 }
+}	

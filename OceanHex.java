@@ -92,18 +92,16 @@ public class OceanHex extends Hex {
 		}
 	}
 
-	public int getNumber() {
-		return 0;
-	}
-
 	public TerrainHex.Resource getResource() {
 		return null;
 	}
 
 	@Override
 	public Type getType() {
-		// TODO Auto-generated method stub
 		return null;
+	
+	public Type getType() {
+		return t;
 	}
 	
 }

@@ -1,5 +1,3 @@
-//Alan version
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -17,7 +15,9 @@ public class Board {
 	private ArrayList<TerrainHex.Resource> availableTiles = new ArrayList<TerrainHex.Resource>();
 	private ArrayList<Integer> availableNumbers = new ArrayList<Integer>();
 	private ArrayList<Location> spaces = new ArrayList<Location>();
+	private ArrayList<Road> roads = new ArrayList<Road>();
 	private boolean isDesert = false;
+	private ArrayList<DevelopmentCard> devCardDeck = new ArrayList<DevelopmentCard>();
 
 	public Board(int pw, int ph) {
 		hexArr[0] = new Hex[4];
@@ -28,13 +28,13 @@ public class Board {
 		hexArr[5] = new Hex[5];
 		hexArr[6] = new Hex[4];
 
-		boardWidth = pw/2;
-		boardHeight = (4*ph)/5;
-		boardXLoc = pw/4;
-		hexWidth = boardWidth/7;
-		hexHeight = (int)(2*(hexWidth/Math.sqrt(3)));
-		xGap = boardWidth - 7*hexWidth;
-		yGap = boardHeight - (11*hexHeight)/2;
+		boardWidth = pw / 2;
+		boardHeight = (4 * ph) / 5;
+		boardXLoc = pw / 4;
+		hexWidth = boardWidth / 7;
+		hexHeight = (int) (2 * (hexWidth / Math.sqrt(3)));
+		xGap = boardWidth - 7 * hexWidth;
+		yGap = boardHeight - (11 * hexHeight) / 2;
 
 		availablePorts.add(OceanHex.Port.Wood);
 		availablePorts.add(OceanHex.Port.Brick);
@@ -87,44 +87,51 @@ public class Board {
 
 		setTileLocs();
 		setUpPorts();
-//		setCoastalLocs();
-//		setUpOrDown();
+	}
+
+	public void giveResources(int roll) {
+		ArrayList<Hex> hexes = new ArrayList<Hex>();
+		for (Location l : spaces) {
+			if (l.hasBuilding() && l.getBuilding().hasOwner() && l.getNums().contains(roll)) {
+				hexes = l.getHexes();
+				for (Hex h : hexes) {
+					if (((TerrainHex) h).getNumber() == roll) {
+						l.getBuilding().getOwner().addCard(((TerrainHex) h).getResource());
+					}
+				}
+			}
+		}
 	}
 
 	public void setTileLocs() {
-		int y = yGap/2 + hexHeight/2;
+		int y = yGap / 2 + hexHeight / 2;
 		int x = boardXLoc;
-		for(int r = 0; r < hexArr.length; r++) {
-			if(hexArr[r].length == 4) {
-				x = boardXLoc + xGap/2 + 2*hexWidth;
+		for (int r = 0; r < hexArr.length; r++) {
+			if (hexArr[r].length == 4) {
+				x = boardXLoc + xGap / 2 + 2 * hexWidth;
+			} else if (hexArr[r].length == 5) {
+				x = boardXLoc + xGap / 2 + (3 * hexWidth) / 2;
+			} else if (hexArr[r].length == 6) {
+				x = boardXLoc + xGap / 2 + hexWidth;
+			} else if (hexArr[r].length == 7) {
+				x = boardXLoc + xGap / 2 + hexWidth / 2;
 			}
-			else if(hexArr[r].length == 5) {
-				x = boardXLoc + xGap/2 + (3*hexWidth)/2;
-			}
-			else if(hexArr[r].length == 6) {
-				x = boardXLoc + xGap/2 + hexWidth;
-			}
-			else if(hexArr[r].length == 7) {
-				x = boardXLoc + xGap/2 + hexWidth/2;
-			}
-			for(int c = 0; c < hexArr[r].length; c++) {
-				if(r == 0 || r == hexArr.length - 1 || c == 0 || c == hexArr[r].length - 1) {
+			for (int c = 0; c < hexArr[r].length; c++) {
+				if (r == 0 || r == hexArr.length - 1 || c == 0 || c == hexArr[r].length - 1) {
 					hexArr[r][c] = new OceanHex(OceanHex.Port.Ocean, x, y, hexWidth);
-				}
-				else {
+				} else {
 					TerrainHex.Resource randTile = randomTile();
 					int randNum = randomNumber();
 					hexArr[r][c] = new TerrainHex(randTile, x, y, hexWidth, randNum);
-					if(randTile == TerrainHex.Resource.Desert) {
+					if (randTile == TerrainHex.Resource.Desert) {
 						hexArr[r][c].makeRobber(true);
 					}
-					for(int i = 0; i < hexArr[r][c].getVertices().size(); i++) {
-						if(!isSameLoc(hexArr[r][c].getVertices().get(i))) {
+					for (int i = 0; i < hexArr[r][c].getVertices().size(); i++) {
+						if (!isSameLoc(hexArr[r][c].getVertices().get(i))) {
 							spaces.add(hexArr[r][c].getVertices().get(i));
 							spaces.get(spaces.size() - 1).assign(randTile, randNum);
 							spaces.get(spaces.size() - 1).assignHex(hexArr[r][c]);
-						}
-						else {
+						} else {
 							int index = findSameLoc(hexArr[r][c].getVertices().get(i));
 							spaces.get(index).assign(randTile, randNum);
 							spaces.get(index).assignHex(hexArr[r][c]);
@@ -133,7 +140,7 @@ public class Board {
 				}
 				x += hexWidth;
 			}
-			y += (3*hexHeight)/4;
+			y += (3 * hexHeight) / 4;
 		}
 	}
 
@@ -141,61 +148,61 @@ public class Board {
 		OceanHex.Port currentPort;
 		int randIndex;
 
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[0][0] = new OceanHex(currentPort, hexArr[0][0].getXLoc(), hexArr[0][0].getYLoc(), hexWidth);
 		portLocations(hexArr[0][0], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[0][2] = new OceanHex(currentPort, hexArr[0][2].getXLoc(), hexArr[0][2].getYLoc(), hexWidth);
 		portLocations(hexArr[0][2], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[1][4] = new OceanHex(currentPort, hexArr[1][4].getXLoc(), hexArr[1][4].getYLoc(), hexWidth);
 		portLocations(hexArr[1][4], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[2][0] = new OceanHex(currentPort, hexArr[2][0].getXLoc(), hexArr[2][0].getYLoc(), hexWidth);
 		portLocations(hexArr[2][0], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[3][6] = new OceanHex(currentPort, hexArr[3][6].getXLoc(), hexArr[3][6].getYLoc(), hexWidth);
 		portLocations(hexArr[3][6], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[4][0] = new OceanHex(currentPort, hexArr[4][0].getXLoc(), hexArr[4][0].getYLoc(), hexWidth);
 		portLocations(hexArr[4][0], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[5][4] = new OceanHex(currentPort, hexArr[5][4].getXLoc(), hexArr[5][4].getYLoc(), hexWidth);
 		portLocations(hexArr[5][4], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[6][0] = new OceanHex(currentPort, hexArr[6][0].getXLoc(), hexArr[6][0].getYLoc(), hexWidth);
 		portLocations(hexArr[6][0], currentPort);
-		randIndex = (int)(Math.random()*availablePorts.size());
+		randIndex = (int) (Math.random() * availablePorts.size());
 		currentPort = availablePorts.get(randIndex);
 		availablePorts.remove(randIndex);
 		hexArr[6][2] = new OceanHex(currentPort, hexArr[6][2].getXLoc(), hexArr[6][2].getYLoc(), hexWidth);
 		portLocations(hexArr[6][2], currentPort);
 	}
-	
+
 	public void portLocations(Hex h, OceanHex.Port p) {
 		int samePorts = 0;
-		for(int i = 0; i < spaces.size(); i++) {
-			for(int j = 0; j < h.getVertices().size(); j++) {
-				if(Math.abs(spaces.get(i).getXLoc() - h.getVertices().get(j).getXLoc()) < 3) {
-					if(Math.abs(spaces.get(i).getYLoc() - h.getVertices().get(j).getYLoc()) < 3) {
-						if(samePorts < 2)
-						spaces.get(i).makePort(p);
+		for (int i = 0; i < spaces.size(); i++) {
+			for (int j = 0; j < h.getVertices().size(); j++) {
+				if (Math.abs(spaces.get(i).getXLoc() - h.getVertices().get(j).getXLoc()) < 3) {
+					if (Math.abs(spaces.get(i).getYLoc() - h.getVertices().get(j).getYLoc()) < 3) {
+						if (samePorts < 2)
+							spaces.get(i).makePort(p);
 						samePorts++;
 					}
 				}
@@ -204,9 +211,9 @@ public class Board {
 	}
 
 	public TerrainHex.Resource randomTile() {
-		int randIndex = (int)(Math.random()*availableTiles.size());
+		int randIndex = (int) (Math.random() * availableTiles.size());
 		TerrainHex.Resource temp = availableTiles.get(randIndex);
-		if(temp == TerrainHex.Resource.Desert) {
+		if (temp == TerrainHex.Resource.Desert) {
 			isDesert = true;
 		}
 		availableTiles.remove(randIndex);
@@ -214,57 +221,60 @@ public class Board {
 	}
 
 	public int randomNumber() {
-		if(isDesert == true) {
+		if (isDesert == true) {
 			isDesert = false;
 			return 0;
-		}
-		else {
-			int randIndex = (int)(Math.random()*availableNumbers.size());
+		} else {
+			int randIndex = (int) (Math.random() * availableNumbers.size());
 			int temp = availableNumbers.get(randIndex);
 			availableNumbers.remove(randIndex);
 			return temp;
 		}
 	}
-	
+
 	public boolean isSameLoc(Location loc) {
-		for(Location temp : spaces) {
-			if(Math.abs(loc.getXLoc() - temp.getXLoc()) < 3) {
-				if(Math.abs(loc.getYLoc() - temp.getYLoc()) < 3) {
+		for (Location temp : spaces) {
+			if (Math.abs(loc.getXLoc() - temp.getXLoc()) < 3) {
+				if (Math.abs(loc.getYLoc() - temp.getYLoc()) < 3) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	public int findSameLoc(Location loc) {
-		for(int i = 0; i < spaces.size(); i++) {
-			if(Math.abs(loc.getXLoc() - spaces.get(i).getXLoc()) < 3) {
-				if(Math.abs(loc.getYLoc() - spaces.get(i).getYLoc()) < 3) {
+		for (int i = 0; i < spaces.size(); i++) {
+			if (Math.abs(loc.getXLoc() - spaces.get(i).getXLoc()) < 3) {
+				if (Math.abs(loc.getYLoc() - spaces.get(i).getYLoc()) < 3) {
 					return i;
 				}
 			}
 		}
 		return -1;
 	}
-	
+
 	public void draw(Graphics g) {
-		g.setColor(new Color(153,255,255));
+		g.setColor(new Color(153, 255, 255));
 		g.fillRect(boardXLoc, 0, boardWidth, boardHeight);
-		for(int r = 0; r < hexArr.length; r++) {
-			for(int c = 0; c < hexArr[r].length; c++) {
+		for (int r = 0; r < hexArr.length; r++) {
+			for (int c = 0; c < hexArr[r].length; c++) {
 				hexArr[r][c].draw(g);
 			}
 		}
-		for(Location loc : spaces) {
+		for (Location loc : spaces) {
 			loc.draw(g);
 		}
+		for (Road r : roads) {
+			r.draw(g);
+		}
 	}
-	
+
 	public boolean checkAdjacentLocs(Location loc) {
-		for(int i = 0; i < spaces.size(); i++) {
-			if((Math.sqrt(Math.pow((loc.getXLoc() - spaces.get(i).getXLoc()), 2) + Math.pow((loc.getYLoc() - spaces.get(i).getYLoc()), 2))) < hexHeight/2) {
-				if(spaces.get(i).hasSettlement() || spaces.get(i).hasCity()) {
+		for (int i = 0; i < spaces.size(); i++) {
+			if ((Math.sqrt(Math.pow((loc.getXLoc() - spaces.get(i).getXLoc()), 2)
+					+ Math.pow((loc.getYLoc() - spaces.get(i).getYLoc()), 2))) < hexHeight / 2 + 5) {
+				if (spaces.get(i).hasSettlement() || spaces.get(i).hasCity()) {
 					return false;
 				}
 			}
@@ -273,51 +283,57 @@ public class Board {
 	}
 
 	public Location closestLoc(int x, int y) {
-		for(int i = 0; i < spaces.size(); i++) {
-			if(Math.abs(spaces.get(i).getXLoc() - x) < 20) {
-				if(Math.abs(spaces.get(i).getYLoc() - y) < 20) {
+		for (int i = 0; i < spaces.size(); i++) {
+			if (Math.abs(spaces.get(i).getXLoc() - x) < 20) {
+				if (Math.abs(spaces.get(i).getYLoc() - y) < 20) {
 					return spaces.get(i);
 				}
 			}
 		}
 		return null;
 	}
-	
-//	public void setUpOrDown() {
-//		for(Location loc:spaces) {
-//			Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
-//			Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
-//			Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
-//			Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
-//
-//			if(up==null)
-//				loc.up(false);
-//			else if(down==null)
-//				loc.up(true);
-//		}
-//	}
-//		
-//	public void setCoastalLocs() {
-//		for(Location loc:spaces) {
-//			if(loc.isUpLoc()) {
-//				Location up = closestLoc(loc.getXLoc(),loc.getYLoc()-40);
-//				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
-//				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
-//				
-//				if(up==null || left==null || right==null) {
-//					loc.onCoast();
-//				}
-//			}
-//			else if(!loc.isUpLoc()) {
-//				Location down = closestLoc(loc.getXLoc(),loc.getYLoc()+40);
-//				Location left = closestLoc(loc.getXLoc()-20,loc.getYLoc());
-//				Location right = closestLoc(loc.getXLoc()+20,loc.getYLoc());
-//				
-//				if(down==null || left==null || right==null) {
-//					loc.onCoast();
-//				}
-//			}
-//		}
-//	}
+	public boolean isAdjacent(int x1, int y1, int x2, int y2) {
+		if ((Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))) < hexHeight / 2 + 5) {
+			return true;
+		}
+		return false;
+	}
 
+	public void addRoad(Road r) {
+		roads.add(r);
+	}
+
+	public void makeDevCardDeck() {
+		for (int k = 0; k < 28; k++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Knight, this));
+		}
+		for (int vp = 0; vp < 10; vp++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.VictoryPoint, this));
+		}
+		for (int rb = 0; rb < 4; rb++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.RoadBuilding, this));
+		}
+		for (int m = 0; m < 4; m++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.Monopoly, this));
+		}
+		for (int yop = 0; yop < 4; yop++) {
+			devCardDeck.add(new DevelopmentCard(DevelopmentCard.DevCardTypes.YearOfPlenty, this));
+		}
+
+		ArrayList<DevelopmentCard> temp = new ArrayList<DevelopmentCard>();
+		for (int i = 0; i < 50; i++) {
+			int rand = (int) (Math.random() * 50);
+			while (temp.contains(devCardDeck.get(rand))) {
+				rand = (int) (Math.random() * 50);
+			}
+			temp.add(devCardDeck.get(rand));
+		}
+		devCardDeck = temp;
+	}
+
+	public DevelopmentCard takeDevCard() {
+		DevelopmentCard dc = devCardDeck.get(0);
+		devCardDeck.remove(0);
+		return dc;
+	}
 }
