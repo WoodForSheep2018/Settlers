@@ -179,6 +179,7 @@ public class Player {
 			removeCardsOfType(TerrainHex.Resource.Rock,3);
 			removeCardsOfType(TerrainHex.Resource.Wheat,2);
 			citiesLeft--;
+			setsLeft++;
 //			putDownCity(Location);
 			points++;
 		}
@@ -293,4 +294,17 @@ public class Player {
 	public void setTurn(boolean b) {
 		isTurn = b;
 	}
+	
+	public void changeSets(int n) {
+		setsLeft += n;
+	}
+	
+	public void changeRoads(int n) {
+		roadsLeft += n;
+	}
+	
+	public void changeCities(int n) {
+		citiesLeft += n;
+	}
+	
 }
