@@ -59,13 +59,15 @@ public class Location {
 	}
 
 	public void makeCity() {
-		building.buildCity();;
+		building.buildCity();
+		player.incrementPoints();
 	}
 
 	public void makeSettlement(Player p) {
 		player = p;
 		building.setOwner(player);
 		building.buildSettlement();
+		player.incrementPoints();
 	}
 
 	public void makePort(OceanHex.Port p) {
