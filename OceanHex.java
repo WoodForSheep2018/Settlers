@@ -3,7 +3,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 public class OceanHex extends Hex {
-	private Type t = Type.Ocean;
+	
 	public enum Port{Wood, Brick, Sheep, Wheat, Rock, ThreeOne, Ocean}
 	private Port type;
 	
@@ -91,6 +91,14 @@ public class OceanHex extends Hex {
 			g.drawString(str, getXLoc() - textWidth/2, getYLoc() + textAscent/2);
 		}
 	}
+
+	public TerrainHex.Resource getResource() {
+		return null;
+	}
+
+	@Override
+	public Type getType() {
+		return null;
 	
 	public Type getType() {
 		return t;
