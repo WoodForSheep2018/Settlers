@@ -174,7 +174,6 @@ public class SettlersPanel extends JPanel {
 	public void setUpGameObjects(ArrayList<PlayerOptions> players) {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
 		for(int n = 0;n < players.size();n++) {
-			boolean darker = false;
 			for(int i = 0;i < n;i++) {
 				if(players.get(n).getColor().equals(players.get(i).getColor())) {
 					players.get(n).changeColor(
@@ -183,12 +182,9 @@ public class SettlersPanel extends JPanel {
 									(int)(players.get(n).getColor().getGreen()*.9),
 									(int)(players.get(n).getColor().getBlue()*.9)
 									));
-					darker = true;
 				}
 			}
-			if(!darker) {
-				playerList.add(new Player(b,players.get(n).getName(),players.get(n).getColor()));
-			}
+			playerList.add(new Player(b,players.get(n).getName(),players.get(n).getColor()));
 		}
 		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, playerList.get(0));
 		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, playerList.get(1));
