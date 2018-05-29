@@ -244,10 +244,10 @@ public class Player {
 		return true;
 	}
 
-	private int findNumOfCardsOfType(TerrainHex.Resource r) {
+	public int findNumOfCardsOfType(TerrainHex.Resource r) {
 		int num = 0;
-		for (ResourceCard rc : resourceCards) {
-			if (rc.getResource().equals(r)) {
+		for(ResourceCard rc : resourceCards) {
+			if(rc.getResource().equals(r)) {
 				num++;
 			}
 		}
@@ -312,6 +312,10 @@ public class Player {
 	
 	public boolean getTurn() {
 		return isTurn;
+	}
+	
+	public void incrementPoints() {
+		points++;
 	}
 
 }
