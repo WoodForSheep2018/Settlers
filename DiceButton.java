@@ -7,11 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class DiceButton extends JPanel{
-	int xMin;
-	int xMax;
-	int yMin;
-	int yMax;
-	int roll;
+	private int xMin;
+	private int xMax;
+	private int yMin;
+	private int yMax;
+	private int roll;
 	
 	public DiceButton(Board b) {
 		xMin = b.getBoardXLoc();
