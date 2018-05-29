@@ -13,8 +13,7 @@ public class Location {
 	private OceanHex.Port port;
 	private int portSize;
 	private Player player;
-	private boolean upLoc;
-	private boolean isOnCoast;
+
 
 	public Location(int x, int y, int hexWidth) {
 		xLoc = x;
@@ -32,6 +31,14 @@ public class Location {
 
 	public int getYLoc() {
 		return yLoc;
+	}
+	
+	public ArrayList<Hex> getHexes(){
+		return hexes;
+	}
+	
+	public ArrayList<Integer> getNums(){
+		return surroundingNums;
 	}
 
 	public void assign(TerrainHex.Resource r, int i) {
@@ -81,20 +88,4 @@ public class Location {
 	public boolean hasBuilding() {
 		return building!=null;
 	}
-	
-	public void onCoast() {
-		isOnCoast = true;
-	}
-	
-	public void up(boolean bool) {
-		upLoc = bool;
-	}
-	
-	public boolean isUpLoc() {
-		return upLoc;
-	}
-	
-	public boolean isOnCoast() {
-		return isOnCoast();
-	}
-}
+}	
