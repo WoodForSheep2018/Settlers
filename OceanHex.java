@@ -95,9 +95,9 @@ public class OceanHex extends Hex {
 	public TerrainHex.Resource getResource() {
 		return null;
 	}
-	
+
 	public Type getType() {
-		return type;
+		return null;
 	}
 	
 }

@@ -180,6 +180,8 @@ public class SettlersPanel extends JPanel {
 		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT/2, playerList.get(1));
 		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, 0, playerList.get(2));
 		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3*PANEL_WIDTH)/4, PANEL_HEIGHT/2, playerList.get(3));
+		diceButton = new DiceButton();
+		menuButton = new MenuButton();
 	}
 	
 	public void startGame() {

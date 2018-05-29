@@ -90,4 +90,4 @@ public class Location {
 	public boolean hasBuilding() {
 		return building!=null;
 	}
-}	
+}

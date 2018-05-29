@@ -28,6 +28,7 @@ public class StringEditor extends Button {
 
 	public void click() {
 		name = JOptionPane.showInputDialog("Enter your name here");
+		po.setName(name);
 	}
 	
 	public void draw(Graphics g) {

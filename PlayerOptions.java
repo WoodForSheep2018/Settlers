@@ -70,6 +70,10 @@ public class PlayerOptions extends Button {
 		System.out.println(clr);
 		color = clr;
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Image getProfile() {
 		return profile;
