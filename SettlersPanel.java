@@ -104,6 +104,7 @@ public class SettlersPanel extends JPanel {
 				settlementY = b.closestLoc(x,y).getYLoc();
 				if(b.checkAdjacentLocs(b.closestLoc(x,y))) {
 					b.closestLoc(x,y).makeSettlement(currentPlayer);
+					currentPlayer.changeSets(-1);
 					repaint();
 					roadAfterSettlement = true;
 				}
@@ -115,6 +116,7 @@ public class SettlersPanel extends JPanel {
 				int roadFinalY = b.closestLoc(x,y).getYLoc();
 				if(b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
 					b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
+					currentPlayer.changeRoads(-1);
 					repaint();
 					roadAfterSettlement = false;
 					nextTurn();
