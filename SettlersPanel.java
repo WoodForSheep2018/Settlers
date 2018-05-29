@@ -178,9 +178,9 @@ public class SettlersPanel extends JPanel {
 				if(players.get(n).getColor().equals(players.get(i).getColor())) {
 					players.get(n).changeColor(
 							new Color(
-									(int)(players.get(n).getColor().getRed()*.9),
-									(int)(players.get(n).getColor().getGreen()*.9),
-									(int)(players.get(n).getColor().getBlue()*.9)
+									(int)(players.get(n).getColor().getRed()*.85),
+									(int)(players.get(n).getColor().getGreen()*.85),
+									(int)(players.get(n).getColor().getBlue()*.85)
 									));
 				}
 			}
