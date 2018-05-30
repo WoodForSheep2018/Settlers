@@ -33,6 +33,14 @@ public class SettlersPanel extends JPanel {
 	private int curRoll = 0;
 	private int x;
 	private int y;
+	private boolean buildRoad = false;
+	private boolean buildSettlement = false;
+	private boolean buildCity = false;
+	private int startX;
+	private int startY;
+	private int endX;
+	private int endY;
+	private int roadClickNumber = -1;
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Catan");
@@ -55,33 +63,21 @@ public class SettlersPanel extends JPanel {
 		startGame();
 	}
 
-	public void doTurn() {
-		rollDice();
-		if(diceRolled) {
-			doPlayerActions();
-		}
-	}
-
 	public void doPlayerActions() {
 		if(menuButton.devCardBox(x,y)) {
 			System.out.println("dope");
 		} 
 		else if(menuButton.roadBox(x,y)) {
 			System.out.println("dope");
-			currentPlayer.buildRoad();
-			System.out.println(currentPlayer.findNumOfCardsOfType(TerrainHex.Resource.Brick));
-			repaint();
-			int startX = x;
-			int startY = y;
-			b.addRoad(new Road(startX,startY,x,y,currentPlayer));
+			buildRoad = true;
 		} 
 		else if(menuButton.settlementBox(x,y)) {
 			System.out.println("dope");
-			currentPlayer.buildSettlement();
+			buildSettlement = true;
 		} 
 		else if(menuButton.cityBox(x,y)) {
 			System.out.println("dope");
-			currentPlayer.buildCity();
+			buildCity = true;
 		} 
 		else if(menuButton.endTurnBox(x,y)) {
 			System.out.println("dope");
@@ -108,6 +104,13 @@ public class SettlersPanel extends JPanel {
 				if (b.checkAdjacentLocs(b.closestLoc(x, y))) {
 					b.closestLoc(x, y).makeSettlement(currentPlayer);
 					currentPlayer.changeSets(-1);
+					if(turn>playerList.size()) {
+						ArrayList<Hex> hexes = b.closestLoc(x,y).getHexes();
+						for(Hex hex:hexes) {
+							if(hex.getResource()!=null)
+								b.giveResources(currentPlayer, hex.getResource());
+						}
+					}
 					repaint();
 					roadAfterSettlement = true;
 				}
@@ -118,7 +121,7 @@ public class SettlersPanel extends JPanel {
 				int roadFinalX = b.closestLoc(x, y).getXLoc();
 				int roadFinalY = b.closestLoc(x, y).getYLoc();
 				if(b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
-					if(settlementX != roadFinalX && settlementY != roadFinalY) {
+					if(!(settlementX == roadFinalX && settlementY == roadFinalY)) {
 						b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
 						currentPlayer.changeRoads(-1);
 						repaint();
@@ -129,6 +132,7 @@ public class SettlersPanel extends JPanel {
 			}
 		}
 	}
+	
 
 	public void setUpMouseListener() {
 		this.addMouseListener(new MouseListener() {
@@ -136,11 +140,25 @@ public class SettlersPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
+				if(roadClickNumber==0) {
+					startX = x;
+					startY = y;
+					roadClickNumber++;
+				}
+				else if(roadClickNumber==1) {
+					endX = x;
+					endY = y;
+					roadClickNumber = -1;
+				}
+			
 				if(turn <= playerList.size()*2) {
 					pickStartingSettlements();
 				} 
 				else {
-					doTurn();
+					rollDice();
+					if(diceRolled && x>=menuButton.getXMin() && x<=menuButton.getXMax() && y>=menuButton.getYMin() && y<=menuButton.getYMax()) {
+						doPlayerActions();
+					}
 				}
 			}
 			@Override

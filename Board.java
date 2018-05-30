@@ -89,6 +89,12 @@ public class Board {
 		setUpPorts();
 	}
 
+	public void giveResources(Player p, TerrainHex.Resource ... res) {
+		for(int i=0; i<res.length; i++) {
+			p.addCard(new ResourceCard(res[i]));
+		}
+	}
+	
 	public void giveResources(int roll) {
 		ArrayList<Hex> hexes = new ArrayList<Hex>();
 		for (Location l : spaces) {

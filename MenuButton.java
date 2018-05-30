@@ -55,6 +55,14 @@ public class MenuButton {
 		return yMax;
 	}
 	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
 	public boolean devCardBox(int x, int y) {
 		if(x > devCardX && x < devCardX + boxWidth) {
 			if(y > yMin + ySpacing && y < yMin + ySpacing + boxHeight) {
@@ -104,7 +112,7 @@ public class MenuButton {
 		g.setColor(Color.WHITE);
 		g.fillRect(xMin, yMin, width, height);
 		
-		g.setColor(Color.PINK);
+		g.setColor(Color.MAGENTA);
 		g.fillRect(devCardX, yMin + ySpacing, boxWidth, boxHeight);
 		g.fillRect(roadX, yMin + ySpacing, boxWidth, boxHeight);
 		g.fillRect(settlementX, yMin + ySpacing, boxWidth, boxHeight);
