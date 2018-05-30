@@ -60,36 +60,38 @@ public class SettlersPanel extends JPanel {
 
 	public void doTurn() {
 		rollDice();
-		if (diceRolled) {
+		if(diceRolled) {
 			doPlayerActions();
 		}
 
 	}
 
 	public void doPlayerActions() {
-		if (x >= 300 && x <= 450 && y >= 640 && y <= 760) {
-
-		} else if (x >= 450 && x <= 600 && y >= 640 && y <= 760) {
+		if(menuButton.devCardBox(x,y)) {
+			
+		} 
+		else if(menuButton.roadBox(x,y)) {
 			currentPlayer.buildRoad();
 			System.out.println(currentPlayer.findNumOfCardsOfType(TerrainHex.Resource.Brick));
 			repaint();
 			int startX = x;
 			int startY = y;
 			b.addRoad(new Road(startX,startY,x,y,currentPlayer));
-		} else if (x >= 600 && x <= 750 && y >= 640 && y <= 760) {
+		} 
+		else if(menuButton.settlementBox(x,y)) {
 			currentPlayer.buildSettlement();
-		} else if (x >= 750 && x <= 900 && y >= 640 && y <= 760) {
+		} 
+		else if(menuButton.cityBox(x,y)) {
 			currentPlayer.buildCity();
-		} else if (x >= 300 && x <= 900 && y >= 760 && y <= 800) {
-			System.out.println("good");
+		} 
+		else if(menuButton.endTurnBox(x,y)) {
 			nextTurn();
 		}
 	}
 
 	public void rollDice() {
-		if (!diceRolled) {
-			if (x >= diceButton.getXMin() && x <= diceButton.getXMax() && y >= diceButton.getYMin()
-					&& y <= diceButton.getYMax()) {
+		if(!diceRolled) {
+			if (x >= diceButton.getXMin() && x <= diceButton.getXMax() && y >= diceButton.getYMin() && y <= diceButton.getYMax()) {
 				curRoll = diceButton.roll();
 				b.giveResources(curRoll);
 				diceRolled = true;
@@ -110,7 +112,8 @@ public class SettlersPanel extends JPanel {
 					roadAfterSettlement = true;
 				}
 			}
-		} else if (roadAfterSettlement == true) {
+		} 
+		else if (roadAfterSettlement == true) {
 			if (b.closestLoc(x, y) != null) {
 				int roadFinalX = b.closestLoc(x, y).getXLoc();
 				int roadFinalY = b.closestLoc(x, y).getYLoc();
@@ -131,9 +134,10 @@ public class SettlersPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
-				if (turn < 9) {
+				if(turn < 9) {
 					pickStartingSettlements();
-				} else {
+				} 
+				else {
 					doTurn();
 				}
 			}
@@ -174,8 +178,8 @@ public class SettlersPanel extends JPanel {
 		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT / 2, player2);
 		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, 0, player3);
 		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, PANEL_HEIGHT / 2, player4);
-		diceButton = new DiceButton();
-		menuButton = new MenuButton();
+		diceButton = new DiceButton(b);
+		menuButton = new MenuButton(b, PANEL_HEIGHT);
 	}
 
 	public void setUpGameObjects(ArrayList<PlayerOptions> players) {
@@ -195,8 +199,8 @@ public class SettlersPanel extends JPanel {
 		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT / 2, playerList.get(1));
 		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, 0, playerList.get(2));
 		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, PANEL_HEIGHT / 2, playerList.get(3));
-		diceButton = new DiceButton();
-		menuButton = new MenuButton();
+		diceButton = new DiceButton(b);
+		menuButton = new MenuButton(b, PANEL_HEIGHT);
 	}
 
 	public void startGame() {
