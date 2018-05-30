@@ -18,6 +18,7 @@ public class MenuButton {
 	private int roadX;
 	private int settlementX;
 	private int cityX;
+	private int buyDevCardX;
 	private int endTurnX;
 	
 	public MenuButton(Board b, int ph) {
@@ -36,7 +37,8 @@ public class MenuButton {
 		roadX = devCardX + boxWidth + xSpacing;
 		settlementX = roadX + boxWidth + xSpacing;
 		cityX = settlementX + boxWidth + xSpacing;
-		endTurnX = xMin + width/2 - boxWidth/2;
+		buyDevCardX = roadX;
+		endTurnX = settlementX;
 	}
 
 	public int getXMin() {
@@ -107,6 +109,15 @@ public class MenuButton {
 		}
 		return false;
 	}
+	
+	public boolean buyDevCardX(int x, int y) {
+		if(x > buyDevCardX && x < buyDevCardX + boxWidth) {
+			if(y > yMin + 2*ySpacing + boxHeight && y < yMin + 2*ySpacing + 2*boxHeight) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
@@ -120,6 +131,7 @@ public class MenuButton {
 		
 		g.setColor(Color.ORANGE);
 		g.fillRect(endTurnX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
+		g.fillRect(buyDevCardX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
 
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 14));
@@ -129,5 +141,6 @@ public class MenuButton {
 		g.drawString("Build Settlement", settlementX, yMin + ySpacing + textHeight);
 		g.drawString("Build City", cityX, yMin + ySpacing + textHeight);
 		g.drawString("End Turn", endTurnX, yMin + 2*ySpacing + boxHeight + textHeight);
+		g.drawString("Buy Card", buyDevCardX, yMin + 2*ySpacing + boxHeight + textHeight);
 	}
 }
