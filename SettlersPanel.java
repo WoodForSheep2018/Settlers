@@ -64,9 +64,10 @@ public class SettlersPanel extends JPanel {
 
 	public void doPlayerActions() {
 		if(menuButton.devCardBox(x,y)) {
-			
+			System.out.println("dope");
 		} 
 		else if(menuButton.roadBox(x,y)) {
+			System.out.println("dope");
 			currentPlayer.buildRoad();
 			System.out.println(currentPlayer.findNumOfCardsOfType(TerrainHex.Resource.Brick));
 			repaint();
@@ -75,12 +76,15 @@ public class SettlersPanel extends JPanel {
 			b.addRoad(new Road(startX,startY,x,y,currentPlayer));
 		} 
 		else if(menuButton.settlementBox(x,y)) {
+			System.out.println("dope");
 			currentPlayer.buildSettlement();
 		} 
 		else if(menuButton.cityBox(x,y)) {
+			System.out.println("dope");
 			currentPlayer.buildCity();
 		} 
 		else if(menuButton.endTurnBox(x,y)) {
+			System.out.println("dope");
 			nextTurn();
 		}
 	}
@@ -113,12 +117,14 @@ public class SettlersPanel extends JPanel {
 			if (b.closestLoc(x, y) != null) {
 				int roadFinalX = b.closestLoc(x, y).getXLoc();
 				int roadFinalY = b.closestLoc(x, y).getYLoc();
-				if (b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
-					b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
-					currentPlayer.changeRoads(-1);
-					repaint();
-					roadAfterSettlement = false;
-					nextTurn();
+				if(b.isAdjacent(settlementX, settlementY, roadFinalX, roadFinalY)) {
+					if(settlementX != roadFinalX && settlementY != roadFinalY) {
+						b.addRoad(new Road(settlementX, settlementY, roadFinalX, roadFinalY, currentPlayer));
+						currentPlayer.changeRoads(-1);
+						repaint();
+						roadAfterSettlement = false;
+						nextTurn();
+					}
 				}
 			}
 		}
@@ -167,7 +173,8 @@ public class SettlersPanel extends JPanel {
 		playerList.add(player2);
 		player3 = new Player(b, "Payton", Color.PINK);
 		playerList.add(player3);
-		
+		player4 = new Player(b, "Al", Color.CYAN);
+		playerList.add(player4);
 		for(int i = 1; i <= playerList.size(); i++) {
 			int xLoc;
 			int yLoc;
@@ -191,8 +198,8 @@ public class SettlersPanel extends JPanel {
 			for(int i = 0; i < n; i++) {
 				if(players.get(n).getColor().equals(players.get(i).getColor())) {
 					players.get(n).changeColor(new Color((int) (players.get(n).getColor().getRed() * .9),
-									(int)(players.get(n).getColor().getGreen() * .9),
-									(int)(players.get(n).getColor().getBlue() * .9)));
+							(int)(players.get(n).getColor().getGreen() * .9),
+							(int)(players.get(n).getColor().getBlue() * .9)));
 				}
 			}
 			playerList.add(new Player(b, players.get(n).getName(), players.get(n).getColor()));
