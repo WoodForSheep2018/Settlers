@@ -110,7 +110,7 @@ public class MenuButton {
 		return false;
 	}
 	
-	public boolean buyDevCardX(int x, int y) {
+	public boolean buyDevCardBox(int x, int y) {
 		if(x > buyDevCardX && x < buyDevCardX + boxWidth) {
 			if(y > yMin + 2*ySpacing + boxHeight && y < yMin + 2*ySpacing + 2*boxHeight) {
 				return true;
