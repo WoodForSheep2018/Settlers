@@ -89,12 +89,6 @@ public class Board {
 		setUpPorts();
 	}
 
-	public void giveResources(Player p, TerrainHex.Resource ... res) {
-		for(int i=0; i<res.length; i++) {
-			p.addCard(new ResourceCard(res[i]));
-		}
-	}
-	
 	public void giveResources(int roll) {
 		ArrayList<Hex> hexes = new ArrayList<Hex>();
 		for (Location l : spaces) {
@@ -341,17 +335,5 @@ public class Board {
 		DevelopmentCard dc = devCardDeck.get(0);
 		devCardDeck.remove(0);
 		return dc;
-	}
-	
-	public int getBoardXLoc() {
-		return boardXLoc;
-	}
-	
-	public int getBoardWidth() {
-		return boardWidth;
-	}
-	
-	public int getBoardHeight() {
-		return boardHeight;
 	}
 }

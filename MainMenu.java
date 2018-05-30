@@ -241,7 +241,7 @@ public class MainMenu extends javax.swing.JPanel {
 		return layout;
 	}
 	public ArrayList<PlayerOptions> getPlayers() {
-		return players;
+		return playingPlayers;
 	}
 
 }

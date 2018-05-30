@@ -14,7 +14,7 @@ public class PlayerOptions extends Button {
 	private StringEditor namer;
 	private String name;
 	
-	public static int numPlayer = 0;
+	public static int numPlayer = -1;
 
 	public PlayerOptions(int x, int y, int w, int h) {
 		super(x, y, w, h);
