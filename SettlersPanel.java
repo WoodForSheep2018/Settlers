@@ -60,7 +60,6 @@ public class SettlersPanel extends JPanel {
 	public void doTurn() {
 		rollDice();
 		doPlayerActions();
-
 	}
 
 	public void doPlayerActions() {
@@ -78,7 +77,7 @@ public class SettlersPanel extends JPanel {
 		}	
 		else if(x>=300 && x<=900 && y>=760 && y<=800) {
 			nextTurn();
-		}	
+		}
 	}
 
 	public void rollDice() {
@@ -126,7 +125,7 @@ public class SettlersPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
-				if(turn < 9) {
+				if(turn < playerList.size()*2+1) {
 					pickStartingSettlements();
 				}
 				else {
@@ -225,7 +224,7 @@ public class SettlersPanel extends JPanel {
 		turn++;
 		currentPlayer.setTurn(false);
 		int current = currentPlayer.getPlayerNumber();
-		if(current < 4) {
+		if(current < playerList.size()) {
 			current++;
 		}
 		else {
