@@ -21,16 +21,13 @@ public class SettlersPanel extends JPanel {
 	private Player player3;
 	private Player player4;
 	private ArrayList<Player> playerList = new ArrayList<Player>();
-	private PlayerBox box1;
-	private PlayerBox box2;
-	private PlayerBox box3;
-	private PlayerBox box4;
+	private ArrayList<PlayerBox> playerBoxList = new ArrayList<PlayerBox>();
 	private Player currentPlayer;
 	private int turn;
 	private boolean diceRolled = false;
 	private boolean roadAfterSettlement = false;
-	private int settlementX = 0;
-	private int settlementY = 0;
+	private int settlementX;
+	private int settlementY;
 	private DiceButton diceButton;
 	private MenuButton menuButton;
 	private int curRoll = 0;
@@ -63,7 +60,6 @@ public class SettlersPanel extends JPanel {
 		if(diceRolled) {
 			doPlayerActions();
 		}
-
 	}
 
 	public void doPlayerActions() {
@@ -134,14 +130,13 @@ public class SettlersPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
-				if(turn < 9) {
+				if(turn <= playerList.size()*2) {
 					pickStartingSettlements();
 				} 
 				else {
 					doTurn();
 				}
 			}
-
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -172,33 +167,49 @@ public class SettlersPanel extends JPanel {
 		playerList.add(player2);
 		player3 = new Player(b, "Payton", Color.PINK);
 		playerList.add(player3);
-		player4 = new Player(b, "Maz", Color.MAGENTA);
-		playerList.add(player4);
-		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, player1);
-		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT / 2, player2);
-		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, 0, player3);
-		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, PANEL_HEIGHT / 2, player4);
+		
+		for(int i = 1; i <= playerList.size(); i++) {
+			int xLoc;
+			int yLoc;
+			if(i == 1 || i == 4)
+				xLoc = 0;
+			else
+				xLoc = (3*PANEL_WIDTH)/4;
+			if(i == 1 || i == 2)
+				yLoc = 0;
+			else
+				yLoc = PANEL_HEIGHT/2;
+			playerBoxList.add(new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, xLoc, yLoc, playerList.get(i-1)));
+		}
 		diceButton = new DiceButton(b);
 		menuButton = new MenuButton(b, PANEL_HEIGHT);
 	}
 
 	public void setUpGameObjects(ArrayList<PlayerOptions> players) {
 		b = new Board(PANEL_WIDTH, PANEL_HEIGHT);
-		for (int n = 0; n < players.size(); n++) {
-			for (int i = 0; i < n; i++) {
-				if (players.get(n).getColor().equals(players.get(i).getColor())) {
-					players.get(n)
-							.changeColor(new Color((int) (players.get(n).getColor().getRed() * .9),
-									(int) (players.get(n).getColor().getGreen() * .9),
-									(int) (players.get(n).getColor().getBlue() * .9)));
+		for(int n = 0; n < players.size(); n++) {
+			for(int i = 0; i < n; i++) {
+				if(players.get(n).getColor().equals(players.get(i).getColor())) {
+					players.get(n).changeColor(new Color((int) (players.get(n).getColor().getRed() * .9),
+									(int)(players.get(n).getColor().getGreen() * .9),
+									(int)(players.get(n).getColor().getBlue() * .9)));
 				}
 			}
 			playerList.add(new Player(b, players.get(n).getName(), players.get(n).getColor()));
 		}
-		box1 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, 0, playerList.get(0));
-		box2 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, 0, PANEL_HEIGHT / 2, playerList.get(1));
-		box3 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, 0, playerList.get(2));
-		box4 = new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, (3 * PANEL_WIDTH) / 4, PANEL_HEIGHT / 2, playerList.get(3));
+		for(int i = 1; i <= playerList.size(); i++) {
+			int xLoc;
+			int yLoc;
+			if(i == 1 || i == 4)
+				xLoc = 0;
+			else
+				xLoc = (3*PANEL_WIDTH)/4;
+			if(i == 1 || i == 2)
+				yLoc = 0;
+			else
+				yLoc = PANEL_HEIGHT/2;
+			playerBoxList.add(new PlayerBox(PANEL_WIDTH, PANEL_HEIGHT, xLoc, yLoc, playerList.get(i-1)));
+		}
 		diceButton = new DiceButton(b);
 		menuButton = new MenuButton(b, PANEL_HEIGHT);
 	}
@@ -208,13 +219,12 @@ public class SettlersPanel extends JPanel {
 		pickStartingPlayer();
 		pickStartingSettlements();
 		setUpMouseListener();
-
 	}
 
 	public void pickStartingPlayer() {
-		int start = (int) (Math.random() * 4 + 1);
+		int start = (int) (Math.random()*playerList.size() + 1);
 		for (Player p : playerList) {
-			if (p.getPlayerNumber() == start) {
+			if(p.getPlayerNumber() == start) {
 				currentPlayer = p;
 				currentPlayer.setTurn(true);
 			}
@@ -226,13 +236,14 @@ public class SettlersPanel extends JPanel {
 		turn++;
 		currentPlayer.setTurn(false);
 		int current = currentPlayer.getPlayerNumber();
-		if (current < 4) {
+		if(current < playerList.size()) {
 			current++;
-		} else {
+		} 
+		else {
 			current = 1;
 		}
-		for (Player p : playerList) {
-			if (p.getPlayerNumber() == current) {
+		for(Player p : playerList) {
+			if(p.getPlayerNumber() == current) {
 				currentPlayer = p;
 				currentPlayer.setTurn(true);
 			}
@@ -252,10 +263,9 @@ public class SettlersPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		b.draw(g);
-		box1.draw(g);
-		box2.draw(g);
-		box3.draw(g);
-		box4.draw(g);
+		for(PlayerBox pb : playerBoxList) {
+			pb.draw(g);
+		}
 		diceButton.draw(g);
 		menuButton.draw(g);
 	}
