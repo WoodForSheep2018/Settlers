@@ -37,8 +37,8 @@ public class MenuButton {
 		roadX = devCardX + boxWidth + xSpacing;
 		settlementX = roadX + boxWidth + xSpacing;
 		cityX = settlementX + boxWidth + xSpacing;
-		buyDevCardX = roadX;
-		endTurnX = settlementX;
+		buyDevCardX = devCardX;
+		endTurnX = cityX;
 	}
 
 	public int getXMin() {
@@ -123,15 +123,17 @@ public class MenuButton {
 		g.setColor(Color.WHITE);
 		g.fillRect(xMin, yMin, width, height);
 		
-		g.setColor(Color.MAGENTA);
+		g.setColor(Color.ORANGE);
 		g.fillRect(devCardX, yMin + ySpacing, boxWidth, boxHeight);
+		g.fillRect(buyDevCardX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
+		
+		g.setColor(Color.MAGENTA);
 		g.fillRect(roadX, yMin + ySpacing, boxWidth, boxHeight);
 		g.fillRect(settlementX, yMin + ySpacing, boxWidth, boxHeight);
 		g.fillRect(cityX, yMin + ySpacing, boxWidth, boxHeight);
 		
-		g.setColor(Color.ORANGE);
+		g.setColor(Color.RED);
 		g.fillRect(endTurnX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
-		g.fillRect(buyDevCardX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
 
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 14));
