@@ -64,4 +64,7 @@ public abstract class Hex {
 		isRobber = b;
 	}
 	
+	public TerrainHex.Resource getResource(){
+		return null;
+	}
 }
