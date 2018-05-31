@@ -36,11 +36,11 @@ public class SettlersPanel extends JPanel {
 	private boolean buildRoad = false;
 	private boolean buildSettlement = false;
 	private boolean buildCity = false;
-	private int startX;
-	private int startY;
+	private int startX = 0;
+	private int startY = 0;	
 	private int endX;
 	private int endY;
-	private int roadClickNumber = -1;
+	private int roadClickNumber = 0;
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Catan");
@@ -63,26 +63,28 @@ public class SettlersPanel extends JPanel {
 		startGame();
 	}
 
-	public void doPlayerActions() {
-		if(menuButton.devCardBox(x,y)) {
-			
-		}
-		else if(menuButton.roadBox(x,y)) {
-			buildRoad = true;
-		} 
-		else if(menuButton.settlementBox(x,y)) {
-			buildSettlement = true;
-		} 
-		else if(menuButton.cityBox(x,y)) {
-			buildCity = true;
-		} 
-		else if(menuButton.buyDevCardBox(x,y)) {
-			
-		}
-		else if(menuButton.endTurnBox(x,y)) {
-			nextTurn();
-		}
-	}
+//	public void doPlayerActions() {
+//		if(menuButton.devCardBox(x,y)) {
+//			System.out.println("dope");
+//		} 
+//		else if(menuButton.roadBox(x,y)) {
+//			System.out.println("dope");
+//			roadClickNumber = 1;
+//			buildRoad = true;
+//		} 
+//		else if(menuButton.settlementBox(x,y)) {
+//			System.out.println("dope");
+//			buildSettlement = true;
+//		} 
+//		else if(menuButton.cityBox(x,y)) {
+//			System.out.println("dope");
+//			buildCity = true;
+//		} 
+//		else if(menuButton.endTurnBox(x,y)) {
+//			System.out.println("dope");
+//			nextTurn();
+//		}
+//	}
 
 	public void rollDice() {
 		if(!diceRolled) {
@@ -106,7 +108,7 @@ public class SettlersPanel extends JPanel {
 					if(turn>playerList.size()) {
 						ArrayList<Hex> hexes = b.closestLoc(x,y).getHexes();
 						for(Hex hex:hexes) {
-							if(hex.getResource() != null)
+							if(hex.getResource()!=null)
 								b.giveResources(currentPlayer, hex.getResource());
 						}
 					}
@@ -131,7 +133,6 @@ public class SettlersPanel extends JPanel {
 			}
 		}
 	}
-	
 
 	public void setUpMouseListener() {
 		this.addMouseListener(new MouseListener() {
@@ -139,25 +140,43 @@ public class SettlersPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
-				if(roadClickNumber == 0) {
+				if(roadClickNumber==1) {
 					startX = x;
 					startY = y;
-					roadClickNumber++;
+					roadClickNumber = 2;
 				}
-				else if(roadClickNumber==1) {
+				else if(roadClickNumber==2) {
 					endX = x;
 					endY = y;
-					roadClickNumber = -1;
+					b.addRoad(new Road(startX, startY, endX, endY, currentPlayer));
+					roadClickNumber = 0;
+					repaint();
 				}
+			
 				if(turn <= playerList.size()*2) {
 					pickStartingSettlements();
 				} 
 				else {
 					rollDice();
-					if(diceRolled && x>=menuButton.getXMin() && x<=menuButton.getXMax() && y>=menuButton.getYMin() && y<=menuButton.getYMax()) {
-						doPlayerActions();
+					if(diceRolled) {
+						if(menuButton.devCardBox(x,y)) {
+						} 
+						else if(menuButton.roadBox(x,y)) {
+							if(currentPlayer.buildRoad()) {
+								if(roadClickNumber==0)
+									roadClickNumber = 1;
+							}
+						} 
+						else if(menuButton.settlementBox(x,y)) {
+						} 
+						else if(menuButton.cityBox(x,y)) {
+						} 
+						else if(menuButton.endTurnBox(x,y)) {
+							nextTurn();
+						}							
 					}
 				}
+				
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -294,4 +313,3 @@ public class SettlersPanel extends JPanel {
 	}
 
 }
-

@@ -157,35 +157,38 @@ public class Player {
 
 	}
 
-	public void buildRoad() {
+	public boolean buildRoad() {
 		if (canBuildRoad()) {
 			removeCardsOfType(TerrainHex.Resource.Brick, 1);
 			removeCardsOfType(TerrainHex.Resource.Wood, 1);
 			roadsLeft--;
-			// putDownRoad(Location);
+			return true;
 		}
+		return false;
 	}
 
-	public void buildSettlement() {
+	public boolean buildSettlement() {
 		if (canBuildSettlement()) {
 			removeCardsOfType(TerrainHex.Resource.Brick, 1);
 			removeCardsOfType(TerrainHex.Resource.Wood, 1);
 			removeCardsOfType(TerrainHex.Resource.Wheat, 1);
 			removeCardsOfType(TerrainHex.Resource.Sheep, 1);
 			setsLeft--;
-			// putDownSettlement(Location);
 			points++;
+			return true;
 		}
+		return false;
 	}
 
-	public void buildCity() {
+	public boolean buildCity() {
 		if (canBuildCity()) {
 			removeCardsOfType(TerrainHex.Resource.Rock, 3);
 			removeCardsOfType(TerrainHex.Resource.Wheat, 2);
 			citiesLeft--;
-			// putDownCity(Location);
 			points++;
+			return true;
 		}
+		return false;
 	}
 
 	public void buyDevCard() {
@@ -193,7 +196,7 @@ public class Player {
 			removeCardsOfType(TerrainHex.Resource.Rock, 1);
 			removeCardsOfType(TerrainHex.Resource.Wheat, 1);
 			removeCardsOfType(TerrainHex.Resource.Sheep, 1);
-			// devCards.add(board.takeDevCard());
+			devCards.add(board.takeDevCard());
 		}
 	}
 
@@ -211,7 +214,8 @@ public class Player {
 		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
 		for (int i = 0; i < resourceCards.size(); i++) {
 			if (num > 0 && resourceCards.get(i).getResource().equals(r)) {
-				cards.add(resourceCards.remove(i));
+				cards.add(resourceCards.get(i));
+				resourceCards.remove(i);
 				i--;
 				num--;
 			}
