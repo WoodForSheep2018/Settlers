@@ -49,11 +49,14 @@ public class PlayerBox {
 		}
 		g.drawString("Development Cards: " + player.getDCards().size(), xLoc, yLoc + nameAscent + 16*textAscent);
 		if(player.getTurn()) {
-			g.drawString("Knight: ", xLoc + boxWidth/4, yLoc + nameAscent + 18*textAscent);
-			g.drawString("Road Building: ", xLoc + boxWidth/4, yLoc + nameAscent + 20*textAscent);
-			g.drawString("Monopoly: ", xLoc + boxWidth/4, yLoc + nameAscent + 22*textAscent);
-			g.drawString("Year of Plenty: ", xLoc + boxWidth/4, yLoc + nameAscent + 24*textAscent);
-			g.drawString("Victory Points: ", xLoc + boxWidth/4, yLoc + nameAscent + 26*textAscent);
+			g.drawString("Knight: " + player.containsDevCard(DevelopmentCard.DevCardTypes.Knight), xLoc + boxWidth/4, yLoc + nameAscent + 18*textAscent);
+			g.drawString("Road Building: " + player.containsDevCard(DevelopmentCard.DevCardTypes.RoadBuilding), xLoc + boxWidth/4, yLoc + nameAscent + 20*textAscent);
+			g.drawString("Monopoly: " + player.containsDevCard(DevelopmentCard.DevCardTypes.Monopoly), xLoc + boxWidth/4, yLoc + nameAscent + 22*textAscent);
+			g.drawString("Year of Plenty: " + player.containsDevCard(DevelopmentCard.DevCardTypes.YearOfPlenty), xLoc + boxWidth/4, yLoc + nameAscent + 24*textAscent);
+			g.drawString("Victory Points: " + player.containsDevCard(DevelopmentCard.DevCardTypes.VictoryPoint), xLoc + boxWidth/4, yLoc + nameAscent + 26*textAscent);
+			g.drawString("Longest Road: " + player.hasLongestRoad(), xLoc, yLoc + nameAscent + 28*textAscent);
+			g.drawString("Largest Army: " + player.hasLargestArmy(), xLoc, yLoc + nameAscent + 30*textAscent);
+
 		}
 
 	}

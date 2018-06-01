@@ -9,6 +9,7 @@ public class Board {
 	private int boardXLoc;
 	private int hexWidth;
 	private int hexHeight;
+	private int roadLength;
 	private int xGap;
 	private int yGap;
 	private ArrayList<OceanHex.Port> availablePorts = new ArrayList<OceanHex.Port>();
@@ -18,6 +19,7 @@ public class Board {
 	private ArrayList<Road> roads = new ArrayList<Road>();
 	private boolean isDesert = false;
 	private ArrayList<DevelopmentCard> devCardDeck = new ArrayList<DevelopmentCard>();
+	private Hex curRobber;
 
 	public Board(int pw, int ph) {
 		hexArr[0] = new Hex[4];
@@ -35,6 +37,7 @@ public class Board {
 		hexHeight = (int) (2 * (hexWidth / Math.sqrt(3)));
 		xGap = boardWidth - 7 * hexWidth;
 		yGap = boardHeight - (11 * hexHeight) / 2;
+		roadLength = hexHeight/2;
 
 		availablePorts.add(OceanHex.Port.Wood);
 		availablePorts.add(OceanHex.Port.Brick);
@@ -87,6 +90,7 @@ public class Board {
 
 		setTileLocs();
 		setUpPorts();
+		makeDevCardDeck();
 	}
 
 	public void giveResources(Player p, TerrainHex.Resource ... res) {
@@ -101,14 +105,23 @@ public class Board {
 			if (l.hasBuilding() && l.getBuilding().hasOwner() && l.getNums().contains(roll)) {
 				hexes = l.getHexes();
 				for (Hex h : hexes) {
-					if (((TerrainHex) h).getNumber() == roll) {
+					if (!h.isRobber && ((TerrainHex) h).getNumber() == roll) {
 						l.getBuilding().getOwner().addCard(((TerrainHex) h).getResource());
 					}
 				}
 			}
 		}
 	}
-
+	
+	public Hex getHex(int r, int c) {
+		return hexArr[r][c];
+	}
+	public void setRobber(int r, int c) {
+		curRobber.makeRobber(false);
+		hexArr[r][c].makeRobber(true);
+		curRobber = hexArr[r][c];
+	}
+	
 	public void setTileLocs() {
 		int y = yGap / 2 + hexHeight / 2;
 		int x = boardXLoc;
@@ -131,6 +144,7 @@ public class Board {
 					hexArr[r][c] = new TerrainHex(randTile, x, y, hexWidth, randNum);
 					if (randTile == TerrainHex.Resource.Desert) {
 						hexArr[r][c].makeRobber(true);
+						curRobber = hexArr[r][c];
 					}
 					for (int i = 0; i < hexArr[r][c].getVertices().size(); i++) {
 						if (!isSameLoc(hexArr[r][c].getVertices().get(i))) {
@@ -299,6 +313,7 @@ public class Board {
 		}
 		return null;
 	}
+	
 	public boolean isAdjacent(int x1, int y1, int x2, int y2) {
 		if ((Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))) < hexHeight / 2 + 5) {
 			return true;
@@ -306,6 +321,23 @@ public class Board {
 		return false;
 	}
 
+	public boolean roadInBetween(Location one, Location two) {
+		for(Road road:roads) {
+			if(road.isAtLocation(one.getXLoc(), one.getYLoc()) && road.isAtLocation(two.getXLoc(), two.getYLoc())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isCorrectRoadLength(int x1, int y1, int x2, int y2) {
+		int xDist = Math.abs(x2-x1);
+		int yDist = Math.abs(y2-y1);
+		
+		int dist = (int) Math.sqrt((xDist*xDist)+(yDist*yDist));
+		return (Math.abs(roadLength-dist)<5);
+	}
+	
 	public void addRoad(Road r) {
 		roads.add(r);
 	}

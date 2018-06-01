@@ -43,17 +43,7 @@ public class TerrainHex extends Hex {
 		}
 		g.fillPolygon(getXPoints(), getYPoints(), 6);
 
-		if(type != Resource.Desert) {
-			g.setColor(Color.WHITE);
-			g.fillOval(getXLoc() - getWidth()/6, getYLoc() - getWidth()/6 , (2*getWidth())/6, (2*getHeight()/6));
-			g.setColor(Color.BLACK);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
-			String numString = Integer.toString(number);
-			int textWidth = g.getFontMetrics().stringWidth(numString);
-			int textAscent = g.getFontMetrics().getAscent();
-			g.drawString(numString, getXLoc() - textWidth/2, getYLoc() + textAscent/2);
-		}
-		else {
+		if(isRobber) {
 			Image i = null;
 			try {
 				i = ImageIO.read(getClass().getResource("theHexV3.GIF"));
@@ -63,6 +53,17 @@ public class TerrainHex extends Hex {
 			}
 			g.drawImage(i, getXLoc() - getWidth()/4, getYLoc() - getHeight()/4, getWidth()/2, getHeight()/2, null);
 		}
+		else if(type != Resource.Desert) {
+			g.setColor(Color.WHITE);
+			g.fillOval(getXLoc() - getWidth()/6, getYLoc() - getWidth()/6 , (2*getWidth())/6, (2*getHeight()/6));
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
+			String numString = Integer.toString(number);
+			int textWidth = g.getFontMetrics().stringWidth(numString);
+			int textAscent = g.getFontMetrics().getAscent();
+			g.drawString(numString, getXLoc() - textWidth/2, getYLoc() + textAscent/2);
+		}
+		
 	}
 
 	public int getNumber() {

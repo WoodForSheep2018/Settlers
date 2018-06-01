@@ -26,7 +26,24 @@ public class Road {
 		}
 		
 	}
+	
+	public boolean isAtLocation(int x, int y) {
+		return ((startX==x && startY==y) || (finalX==x && finalY==y));
+	}
 
+	public int getStartX() {
+		return startX;
+	}
+	public int getStartY() {
+		return startY;
+	}
+	public int getEndX() {
+		return finalX;
+	}
+	public int getEndY() {
+		return finalY;
+	}
+	
 	public void draw(Graphics g) {
 		g.setColor(owner.getColor());
 		g.fillPolygon(xPoints, yPoints, 4);

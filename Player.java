@@ -14,6 +14,7 @@ public class Player {
 	private ArrayList<Location> settlementLoc = new ArrayList<Location>();
 	private ArrayList<Location> cityLoc = new ArrayList<Location>();
 	private ArrayList<Location> roadLoc = new ArrayList<Location>();
+	private ArrayList<OceanHex.Port> ports = new ArrayList<OceanHex.Port>();
 	private Board board;
 	private boolean longestRoad;
 	private boolean largestArmy;
@@ -27,6 +28,39 @@ public class Player {
 		playerNum = numPlayers;
 		playerColor = c;
 	}
+	
+	public void giveUpHalf() {
+		int num = resourceCards.size()/2;
+		while(num>0) {
+			int rand = (int) (Math.random()*resourceCards.size());
+			resourceCards.remove(rand);
+			num--;
+		}
+	}
+	
+	public ResourceCard removeRandomCard() {
+		int rand = (int) (Math.random()*resourceCards.size());
+		ResourceCard rc = resourceCards.get(rand);
+		resourceCards.remove(rand);
+		return rc;
+	}
+	
+	public void addPort(OceanHex.Port p) {
+		ports.add(p);
+	}
+	
+	public boolean hasPortOfType(OceanHex.Port type) {
+		for(OceanHex.Port p:ports) {
+			if(p.equals(type)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public ArrayList<OceanHex.Port> getPorts(){
+		return ports;
+	}
 
 	public void addCard(TerrainHex.Resource r) {
 		resourceCards.add(new ResourceCard(r));
@@ -35,27 +69,62 @@ public class Player {
 	public void addCard(ResourceCard rc) {
 		resourceCards.add(rc);
 	}
-
+	
+	public ArrayList<DevelopmentCard> getDevCards(){
+		return devCards;
+	}
+	
+	public boolean containsDevCard(DevelopmentCard.DevCardTypes type) {
+		for(DevelopmentCard dc:devCards) {
+			if(dc.getType().equals(type))
+				return true;
+		}
+		return false;
+	}
+	
+	public Board getBoard() {
+		return board;
+	}
+	
 	public void addVp() {
 		points++;
+	}
+	public void removeVp() {
+		points--;
 	}
 
 	public void giveLongestRoad() {
 		longestRoad = true;
+		addVp();
+		addVp();
 	}
 
 	public void revokeLongestRoad() {
 		longestRoad = false;
+		removeVp();
+		removeVp();
 	}
 
 	public void giveLargestArmy() {
 		largestArmy = true;
+		addVp();
+		addVp();
 	}
 
 	public void revokeLargestArmy() {
 		largestArmy = false;
+		removeVp();
+		removeVp();
 	}
 
+	public boolean hasLongestRoad() {
+		return longestRoad;
+	}
+	
+	public boolean hasLargestArmy() {
+		return largestArmy;
+	}
+	
 	public void endTurn() {
 
 	}
@@ -210,7 +279,7 @@ public class Player {
 		}
 	}
 
-	private ArrayList<ResourceCard> removeCardsOfType(TerrainHex.Resource r, int num) {
+	public ArrayList<ResourceCard> removeCardsOfType(TerrainHex.Resource r, int num) {
 		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
 		for (int i = 0; i < resourceCards.size(); i++) {
 			if (num > 0 && resourceCards.get(i).getResource().equals(r)) {
@@ -279,15 +348,15 @@ public class Player {
 	}
 
 	public boolean canBuildRoad() {
-		return (fulfills(1, 1, 0, 0, 0));
+		return (fulfills(1, 1, 0, 0, 0) && roadsLeft>=1);
 	}
 
 	public boolean canBuildSettlement() {
-		return (fulfills(1, 1, 1, 1, 0));
+		return (fulfills(1, 1, 1, 1, 0) && setsLeft>=1);
 	}
 
 	public boolean canBuildCity() {
-		return (fulfills(0, 0, 2, 0, 3));
+		return (fulfills(0, 0, 2, 0, 3) && citiesLeft>=1);
 	}
 
 	public boolean canBuyDevCard() {
