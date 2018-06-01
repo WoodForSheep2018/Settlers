@@ -176,17 +176,7 @@ public class SettlersPanel extends JPanel {
 				} else {
 					rollDice();
 					if (diceRolled) {
-						if (menuButton.playDevCardBox(x, y)) {
-							
-						} 
-						
-						else if (menuButton.buyDevCardBox(x, y)) {
-							if(currentPlayer.canBuyDevCard()) {
-								currentPlayer.buyDevCard();
-							}
-						} 
-						
-						else if (menuButton.roadBox(x, y)) {
+						 if (menuButton.roadBox(x, y)) {
 							if (currentPlayer.canBuildRoad()) {
 								roadClickNumber = 1;
 							}
@@ -214,7 +204,8 @@ public class SettlersPanel extends JPanel {
 						}
 						
 						else if (menuButton.tradeWOtherBox(x,y)) {
-							
+							System.out.println("here");
+							tradeWOther();
 						}
 						repaint();
 
@@ -306,9 +297,6 @@ public class SettlersPanel extends JPanel {
 		pickStartingPlayer();
 		pickStartingSettlements();
 		setUpMouseListener();
-//		for(int i=0; i<10; i++) {
-//			currentPlayer.addVp();
-//		}
 	}
 
 	public void pickStartingPlayer() {
@@ -340,46 +328,79 @@ public class SettlersPanel extends JPanel {
 		repaint();
 	}
 	
+	private TerrainHex.Resource initializeResource(String str) {
+		TerrainHex.Resource res = TerrainHex.Resource.Desert;
+		
+		if(str.equals("Brick")) {
+			res = TerrainHex.Resource.Brick;
+		}
+		else if(str.equals("Wood")) {
+			res = TerrainHex.Resource.Wood;
+		}
+		else if(str.equals("Wheat")) {
+			res = TerrainHex.Resource.Wheat;
+		}
+		else if(str.equals("Sheep")) {
+			res = TerrainHex.Resource.Sheep;
+		}
+		else if(str.equals("Rock")) {
+			res = TerrainHex.Resource.Rock;
+		}
+		return res;
+	}
+		
+	private boolean isValid(Player p, TerrainHex.Resource r, int n) {
+		return (p.findNumOfCardsOfType(r)>=n);
+	}
+	
+	private void tradeWOther() {
+		String res = JOptionPane.showInputDialog("Enter as follows (part1 is give; part2 is receive, part3 is trading partner): Resource,number;Resource,number;PlayerName");
+		String giveRes = res.substring(0, res.indexOf(","));
+		String num1 = res.substring(res.indexOf(",")+1, res.indexOf(";"));
+		String recRes = res.substring(res.indexOf(";")+1, res.lastIndexOf(","));
+		String num2 = res.substring(res.lastIndexOf(",")+1,res.lastIndexOf(";"));
+		String player = res.substring(res.lastIndexOf(";")+1);
+		
+		TerrainHex.Resource give = initializeResource(giveRes);
+		TerrainHex.Resource rec = initializeResource(recRes);
+		int giveNum = Integer.parseInt(num1);
+		int recNum = Integer.parseInt(num2);
+		Player trader = player1;
+		for(Player p:playerList) {
+			if(p.getName().equals(player)) {
+				trader = p;
+			}
+		}
+		
+		
+		if(isValid(currentPlayer,give,giveNum) && isValid(trader,rec,recNum)) {
+			String offer = JOptionPane.showInputDialog(player+": "+"would you like to give "+recNum+" "+recRes+" to "+currentPlayer.getName()+" in exchange for "+giveNum+" "+giveRes+"? (Yes or No)");
+			if(offer.equals("Yes")) {
+				ArrayList<ResourceCard> given = currentPlayer.removeCardsOfType(give, giveNum);
+				ArrayList<ResourceCard> received = trader.removeCardsOfType(rec, recNum);
+			
+				for(ResourceCard rc:given) {
+					trader.addCard(rc);
+				}
+				for(ResourceCard rc:received) {
+					currentPlayer.addCard(rc);
+				}
+			}
+		}
+		else {
+			String failed = JOptionPane.showInputDialog("Trade invalid: press enter");
+		}
+	}
+	
 	private void tradeWBank() {
 		String res = JOptionPane.showInputDialog("Enter as follows (part1 is give; part2 is receive): Resource,number;Resource");
 		String giveRes = res.substring(0, res.indexOf(","));
 		String giveNum = res.substring(res.indexOf(",")+1, res.indexOf(";"));
 		String recRes = res.substring(res.indexOf(";")+1);
-		TerrainHex.Resource give = TerrainHex.Resource.Desert;
-		TerrainHex.Resource rec = TerrainHex.Resource.Desert;
+		TerrainHex.Resource give = initializeResource(giveRes);
+		TerrainHex.Resource rec = initializeResource(recRes);
 		int num = Integer.parseInt(giveNum);
 		
-		if(giveRes.equals("Brick")) {
-			give = TerrainHex.Resource.Brick;
-		}
-		else if(giveRes.equals("Wood")) {
-			give = TerrainHex.Resource.Wood;
-		}
-		else if(giveRes.equals("Wheat")) {
-			give = TerrainHex.Resource.Wheat;
-		}
-		else if(giveRes.equals("Sheep")) {
-			give = TerrainHex.Resource.Sheep;
-		}
-		else if(giveRes.equals("Rock")) {
-			give = TerrainHex.Resource.Rock;
-		}
-		
-		if(recRes.equals("Brick")) {
-			rec = TerrainHex.Resource.Brick;
-		}
-		else if(recRes.equals("Wood")) {
-			rec = TerrainHex.Resource.Wood;
-		}
-		else if(recRes.equals("Wheat")) {
-			rec = TerrainHex.Resource.Wheat;
-		}
-		else if(recRes.equals("Sheep")) {
-			rec = TerrainHex.Resource.Sheep;
-		}
-		else if(recRes.equals("Rock")) {
-			rec = TerrainHex.Resource.Rock;
-		}
 		
 		if(currentPlayer.hasPortOfType(OceanHex.Port.ThreeOne) && num>=3) {
 			int calc = num/3;

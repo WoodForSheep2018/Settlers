@@ -41,8 +41,8 @@ public class MenuButton {
 		cityX = settlementX + boxWidth + xSpacing;
 		buyDevCardX = devCardX;
 		endTurnX = cityX;
-		tradeWBankX = devCardX + boxWidth + xSpacing;
-		tradeWOtherX = tradeWBankX + boxWidth + xSpacing;
+		tradeWBankX = xMin + xSpacing;
+		tradeWOtherX = tradeWBankX;
 	}
 
 	public int getXMin() {
@@ -69,14 +69,6 @@ public class MenuButton {
 		return height;
 	}
 	
-	public boolean playDevCardBox(int x, int y) {
-		if(x > devCardX && x < devCardX + boxWidth) {
-			if(y > yMin + ySpacing && y < yMin + ySpacing + boxHeight) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	public boolean roadBox(int x, int y) {
 		if(x > roadX && x < roadX + boxWidth) {
@@ -114,18 +106,10 @@ public class MenuButton {
 		return false;
 	}
 	
-	public boolean buyDevCardBox(int x, int y) {
-		if(x > buyDevCardX && x < buyDevCardX + boxWidth) {
-			if(y > yMin + 2*ySpacing + boxHeight && y < yMin + 2*ySpacing + 2*boxHeight) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
-	public boolean tradeWBankBox(int x, int y) {
+	public boolean tradeWBankBox(int x, int y) {	
 		if(x > tradeWBankX && x < tradeWBankX + boxWidth) {
-			if(y > yMin + 2*ySpacing + boxHeight && y < yMin + 2*ySpacing + 2*boxHeight) {
+			if(y > yMin + ySpacing && y < yMin + ySpacing + boxHeight) {
 				return true;
 			}
 		}
@@ -146,8 +130,8 @@ public class MenuButton {
 		g.fillRect(xMin, yMin, width, height);
 		
 		g.setColor(Color.ORANGE);
-		g.fillRect(devCardX, yMin + ySpacing, boxWidth, boxHeight);
-		//g.fillRect(buyDevCardX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
+		g.fillRect(tradeWBankX, yMin + ySpacing, boxWidth, boxHeight);
+		g.fillRect(tradeWOtherX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
 		
 		g.setColor(Color.MAGENTA);
 		g.fillRect(roadX, yMin + ySpacing, boxWidth, boxHeight);
@@ -157,21 +141,16 @@ public class MenuButton {
 		g.setColor(Color.RED);
 		g.fillRect(endTurnX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
 
-		//g.setColor(Color.GRAY);
-		//g.fillRect(tradeWBankX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
-		//g.fillRect(tradeWOtherX, yMin + 2*ySpacing + boxHeight, boxWidth, boxHeight);
 		
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 14));
 		int textHeight = g.getFontMetrics().getAscent();
-		//g.drawString("Play Dev Card", devCardX, yMin + ySpacing + textHeight);
 		g.drawString("Build Road", roadX, yMin + ySpacing + textHeight);
 		g.drawString("Build Settlement", settlementX, yMin + ySpacing + textHeight);
 		g.drawString("Build City", cityX, yMin + ySpacing + textHeight);
 		g.drawString("End Turn", endTurnX, yMin + 2*ySpacing + boxHeight + textHeight);
-		//g.drawString("Buy Dev Card", buyDevCardX, yMin + 2*ySpacing + boxHeight + textHeight);
-		g.drawString("Trade with Bank", devCardX, yMin + ySpacing + textHeight);
-		//g.drawString("Trade with Other", tradeWOtherX, yMin + 2*ySpacing + boxHeight + textHeight);
+		g.drawString("Trade with Bank", tradeWBankX, yMin + ySpacing + textHeight);
+		g.drawString("Trade with Other", tradeWOtherX, yMin + 2*ySpacing + boxHeight + textHeight);
 
 	}
 }
