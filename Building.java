@@ -43,6 +43,10 @@ public class Building {
 	public void setOwner(Player p) {
 		owner = p;
 	}
+	
+	public int getLevel() {
+		return level;
+	}
 
 	public void draw(Graphics g) {
 		if(owner != null) {

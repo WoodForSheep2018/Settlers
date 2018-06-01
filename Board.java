@@ -106,7 +106,9 @@ public class Board {
 				hexes = l.getHexes();
 				for (Hex h : hexes) {
 					if (!h.isRobber && ((TerrainHex) h).getNumber() == roll) {
-						l.getBuilding().getOwner().addCard(((TerrainHex) h).getResource());
+						for(int i=0; i<l.getBuilding().getLevel(); i++) {
+							l.getBuilding().getOwner().addCard(((TerrainHex) h).getResource());
+						}
 					}
 				}
 			}

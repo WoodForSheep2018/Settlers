@@ -205,7 +205,6 @@ public class SettlersPanel extends JPanel {
 						}
 
 						else if (menuButton.tradeWOtherBox(x, y)) {
-							System.out.println("here");
 							tradeWOther();
 						}
 						repaint();
